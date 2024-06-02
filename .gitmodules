@@ -1,0 +1,3 @@
+[submodule "oxDNA"]
+	path = oxDNA
+	url = https://github.com/lorenzo-rovigatti/oxDNA.git
