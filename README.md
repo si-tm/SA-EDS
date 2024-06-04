@@ -35,6 +35,10 @@ docker build -t sa-eds .
 docker run sa-eds
 ```
 
+## results
+![compararison with regressor for L1](fig/regressor_scores_L1.png)
+
+
 ### Authors
 - Maya Hyakuzuka
     - email: g1920534 "at" is "dot" ocha "dot" ac "dot" jp
