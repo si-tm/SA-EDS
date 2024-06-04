@@ -21,19 +21,19 @@ All scripts need Python 3.11+. To install the required libraries
 pip3 install -r requirements.txt
 ```
 
-```
-docker build -t sa-eds .
-docker run sa-eds
-```
 
 ### Usage
 ### Quickstart
 After all dependencies are installed (including NUPACK), you should be able to launch the Python scripts of this repository.
 ```
-./scripts/predictVolume.py
+./scripts/predictVolumeAll.py
 ./scripts/plotMap.py
 ```
 ### with Docker
+```
+docker build -t sa-eds .
+docker run sa-eds
+```
 
 ### Authors
 - Maya Hyakuzuka
