@@ -1,18 +1,28 @@
 FROM ubuntu:latest
 
-RUN apt-get update
-RUN apt-get -y upgrade
+# Update and upgrade packages
+RUN apt-get update && apt-get -y upgrade
 
-RUN apt-get install python3-pip -y
+# Install Python and virtualenv
+RUN apt-get install -y python3-pip python3-venv
 
-RUN mkdir /home/user
+# Create a directory for the user and set up a virtual environment
+RUN mkdir -p /home/user
+RUN python3 -m venv /home/user/venv
+
+# Copy requirements.txt to the working directory
 COPY requirements.txt /home/user/requirements.txt
 
-RUN pip3 install -r /home/user/requirements.txt
-# RUN pip3 install -r /home/user/requirements.txt
+# Install Python dependencies in the virtual environment
+RUN /home/user/venv/bin/pip install -r /home/user/requirements.txt
 
-COPY nupack-4.0.1.8/package/nupack-4.0.1.8-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl /home/user
-RUN pip3 install /home/user/nupack-4.0.1.8-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+# Conditionally copy and install NUPACK based on the architecture
+RUN uname -m | grep -q aarch64 && \
+    (COPY nupack-4.0.1.8/package/nupack-4.0.1.8-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl /home/user && \
+    /home/user/venv/bin/pip install /home/user/nupack-4.0.1.8-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl) || \
+    (uname -m | grep -q x86_64 && \
+    (COPY nupack-4.0.1.8/package/nupack-4.0.1.8-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl /home/user && \
+    /home/user/venv/bin/pip install /home/user/nupack-4.0.1.8-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl))
 
-# OSにあるbashを呼び出す
-CMD ["/bin/bash"]
+# Set the default command to use the virtual environment
+CMD ["/bin/bash", "-c", "source /home/user/venv/bin/activate && exec /bin/bash"]

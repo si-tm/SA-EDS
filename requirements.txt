@@ -1,0 +1,4 @@
+qdpy
+tensorflow
+keras==2.10.0
+scikit-learn==1.0.2
