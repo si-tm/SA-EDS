@@ -15,14 +15,11 @@ mkdir build && cd build
 cmake .. && make -j 20
 make install
 ```
-All scripts need Python 3.11+. To install the required libraries
-
-```
-pip3 install -r requirements.txt
-```
-
 
 ### Usage
+```
+
+```
 ### Quickstart
 After all dependencies are installed (including NUPACK), you should be able to launch the Python scripts of this repository.
 ```
