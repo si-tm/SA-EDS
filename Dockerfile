@@ -16,4 +16,8 @@ RUN /home/user/venv/bin/pip install "/home/user/${NUPACK_PK}"
 
 RUN /home/user/venv/bin/pip3 install -r /home/user/requirements.txt
 
-CMD ["/bin/bash"]
+RUN apt-get install -y cmake make 
+
+# CMD ["/bin/bash"]
+# ENTRYPOINT ["/home/user/venv/bin/python3"]
+
