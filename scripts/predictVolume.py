@@ -26,15 +26,16 @@ from sklearn.ensemble import RandomForestRegressor, HistGradientBoostingRegresso
 import numpy as np
 import tensorflow as tf
 
-type_of_l = "L1"
+# type_of_l = "L1"
+type_of_l = sys.argv[1]
 
 def get_data():
     # [0, 1, ... 0] + temperature
-    f1 = open(f"dataset/x_initial_{type_of_l}.pkl", "rb")
-    f2 = open(f"dataset/{type_of_l}_data_initial.pkl", "rb")
+    f1 = open(f"home/user/SA-EDS/dataset/x_initial_{type_of_l}.pkl", "rb")
+    f2 = open(f"home/user/SA-EDS/dataset/{type_of_l}_data_initial.pkl", "rb")
     domain_seq_dic = pickle.load(f1)
     value_dic = pickle.load(f2)
-    domain_lst = mis.seq_lst(f"conf/input_seq_{type_of_l}.csv")
+    domain_lst = mis.seq_lst(f"home/user/SA-EDS/conf/input_seq_{type_of_l}.csv")
 
     f1.close()
     f2.close()
@@ -57,41 +58,41 @@ def get_data():
     x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size=0.2)
     return x_train, x_test, y_train, y_test
 
-def get_data_from_f(f_x2=["dataset/x_QD_1_L1.pkl"], f_y2=["dataset/L1_data_QD_1.pkl"]):
-    # [0, 1, ... 0] + temperature
-    f_x1 = open(f"dataset/x_initial_{type_of_l}.pkl", "rb")
-    f_y1= open(f"dataset/{type_of_l}_data_initial.pkl", "rb")
-    domain_seq_dic = pickle.load(f_x1)
-    value_dic = pickle.load(f_y1)
-    for fx in f_x2:
-        fx = open(fx, "rb")
-        domain_seq_dic.update(pickle.load(fx))
-    for fy in f_y2:
-        fy = open(fy, "rb")
-        value_dic.update(pickle.load(fy))
-    domain_lst = mis.seq_lst(f"conf/input_seq_{type_of_l}.csv")
+# def get_data_from_f(f_x2=["dataset/x_QD_1_L1.pkl"], f_y2=["dataset/L1_data_QD_1.pkl"]):
+#     # [0, 1, ... 0] + temperature
+#     f_x1 = open(f"dataset/x_initial_{type_of_l}.pkl", "rb")
+#     f_y1= open(f"dataset/{type_of_l}_data_initial.pkl", "rb")
+#     domain_seq_dic = pickle.load(f_x1)
+#     value_dic = pickle.load(f_y1)
+#     for fx in f_x2:
+#         fx = open(fx, "rb")
+#         domain_seq_dic.update(pickle.load(fx))
+#     for fy in f_y2:
+#         fy = open(fy, "rb")
+#         value_dic.update(pickle.load(fy))
+#     domain_lst = mis.seq_lst(f"conf/input_seq_{type_of_l}.csv")
 
-    f_x1.close()
-    f_y1.close()
+#     f_x1.close()
+#     f_y1.close()
 
-    x_data = []
-    y_data = []
+#     x_data = []
+#     y_data = []
 
-    for key in domain_seq_dic:
-        new_x = []
-        print(domain_seq_dic[key])
-        for domain in domain_lst:
-            new_x.append(domain_seq_dic[key]["domain"][domain])
-        new_x.append(int(key[0]))
-        new_x.append(float(domain_seq_dic[key]['eigenValue_2']))
-        x_data.append(new_x)
-        y_data.append(value_dic[key]['mean_volume'])
+#     for key in domain_seq_dic:
+#         new_x = []
+#         print(domain_seq_dic[key])
+#         for domain in domain_lst:
+#             new_x.append(domain_seq_dic[key]["domain"][domain])
+#         new_x.append(int(key[0]))
+#         new_x.append(float(domain_seq_dic[key]['eigenValue_2']))
+#         x_data.append(new_x)
+#         y_data.append(value_dic[key]['mean_volume'])
 
-    x_data = np.array(x_data)
-    y_data = np.array(y_data)
+#     x_data = np.array(x_data)
+#     y_data = np.array(y_data)
 
-    x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size=0.2)
-    return x_train, x_test, y_train, y_test
+#     x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size=0.2)
+#     return x_train, x_test, y_train, y_test
 
 
 
@@ -131,8 +132,12 @@ def bagging_regressor(x_train,x_test,y_train,y_test):
     plt.plot([0,max_value], res.intercept + res.slope*np.array([0, max_value]), 'r', label='fitted line')
 
     plt.show()
+    plt.savefig(f'home/user/SA-EDS/results/plot_{type_of_l}.png')  # Save the plot as an image file instead of showing it
+    print(f"Plot saved as plot_{type_of_l}.png")
 
 if __name__ == "__main__": 
     # x_train, x_test, y_train, y_test = get_data_from_f()
+    if len(sys.argv) != 2:
+        print("usage : python3 predicvVolume.py {L1, L2, L3}")
     x_train, x_test, y_train, y_test = get_data()
     bagging_regressor(x_train, x_test, y_train, y_test)

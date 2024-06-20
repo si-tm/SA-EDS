@@ -236,9 +236,9 @@ class L2Evo(Evolution):
     def _internal_ask(self, base_ind):
         return super()._internal_ask(base_ind)    
 
-def getModel(path="../../saved_model/L2_ave_230530"):
-    model = load_model(path)
-    return model
+# def getModel(path="../../saved_model/L2_ave_230530"):
+#     model = load_model(path)
+#     return model
 
 def seq_ratio_val(ind):
     base_dic = {
@@ -315,7 +315,7 @@ def set_eval(ind, averageModel,scale=10.0 ):
     features = (fit0, fit1)
     return (score,), features
 
-def run_qdpy(dirpath="test"):
+def run_qdpy(dirpath="/home/user/SA-EDS/results"):
     # Create container and algorithm. Here we use MAP-Elites, by illuminating a Grid container by evolution.
         
     grid = containers.Grid(
@@ -328,27 +328,22 @@ def run_qdpy(dirpath="test"):
     algo = L2Evo(
         grid, 
         # budget=6000, 
-        budget=10000, 
-        batch_size=100,
+        # budget=10000, 
+        # batch_size=100,
+        budget=100, 
+        batch_size=10,
         optimisation_task="maximization")
     
     # Create a logger to pretty-print everything and generate output data files
     logger = algorithms.AlgorithmLogger(algo)
 
-    # averageModel = getModel('../../saved_model/l2_ave_230613')
-    # deviationModel = getModel('../../saved_model/l2_dev_230613')
-    
-    # averageModel = getModel('../../saved_model/l2_ave_20230829')
-    # deviationModel = getModel('../../saved_model/l2_dev_20230830')
-
-    # averageModel = getModel('../../saved_model/l2_ave_20230903')
-    with open('../saved_model/bagging_model_L2_initial.pkl', 'rb') as f:
+    with open('home/user/SA-EDS/saved_model/bagging_model_L2_initial.pkl', 'rb') as f:
         regr_loaded = pickle.load(f)
 
-    averageModel = getModel('../../saved_model/l2_ave_20230903')
-    deviationModel = getModel('../../saved_model/l2_dev_20230903')
-
     eval_fn = functools.partial(set_eval,averageModel=regr_loaded )
+    logger.log_base_path = dirpath 
+    logger.final_filename = "final.p"
+
     best = algo.optimise(eval_fn)
     print(algo.summary())
 

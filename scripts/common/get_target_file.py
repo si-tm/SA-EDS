@@ -83,8 +83,8 @@ def random_file_dic(dir_path):
             fd["rxyz"] = f
         elif "bonds" in f:
             fd[key] = f
-        elif "trajectory" in f:
-            fd["trajectory" + "_" + key[-1]] = f
+        # elif "trajectory" in f:
+        #     fd["trajectory" + "_" + key[-1]] = f
         elif "-e" in f:
             continue
         else:
@@ -149,7 +149,7 @@ def get_req(dir_path):
 
 def get_rxyz(dir_path):
     d = file_dic(dir_path)
-    print(d.keys())
+    # print(d.keys())
     if not "rxyz" in d:
         return False
     return d["rxyz"]
@@ -166,7 +166,7 @@ def test():
     #     print(dic[k])
     #     print()
     
-    print(len(dic))
+    # print(len(dic))
     # last_conf = get_conf("../../input/results/oxdna_ked/seqA/A3/test_a3_200000_1")
     # input = get_input("../../input/results/oxdna_ked/seqA/A3/test_a3_200000_1")
     # top = get_top("../../input/results/oxdna_ked/seqA/A3/test_a3_200000_1")

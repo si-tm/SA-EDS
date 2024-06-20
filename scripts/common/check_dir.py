@@ -24,7 +24,7 @@ def is_fromKED(target_dir):
 
 def included_full_files(target_dir):
     fd = gtf.file_dic(target_dir)
-    print(fd)
+    # print(fd)
     return "last_conf" in fd and "input" in fd and "trajectory" in fd
     # return "last_conf" in fd and "input" in fd
 

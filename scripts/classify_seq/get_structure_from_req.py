@@ -2,7 +2,7 @@ import sys
 # script/から実行
 sys.path.append("common")
 sys.path.append(".")
-import get_target_file as gtf
+import common.get_target_file as gtf
 
 class req():
     def __init__(self, target_dir):
@@ -19,13 +19,34 @@ class req():
             if l[0] == "s":
                 # "="と"@initial"の間を出力
                 lst = l.split(" ")
-                structure = lst[lst.index("=") + 1: lst.index("@initial")]
+                # structure = lst[lst.index("=") + 1: lst.index("@")]
+                if "@ initial" in lst:
+                    structure = lst[lst.index("=") + 1: lst.index("@ initial")]
+                    print(structure)
+                elif "@" in lst:
+                    structure = lst[lst.index("=") + 1: lst.index("@")]
+                else:
+                    structure = lst[lst.index("=") + 1: lst.index("@initial")]
                 structures.append(structure)
         return structures
+    
+    def get_domain_seq(self, target_dir):
+        self.req = gtf.get_req(target_dir)
+        f = open(self.req, "r")
+        domains = {}
+        for l in f:
+            if l[:6] == "domain":
+                # domain a = CGGCCAGTAA
+                domains[l.split(" ")[1]] = l.split(" ")[3].split('\n')[0]
+        return domains
 
 def seq2structure(target_dir):
     req_data = req(target_dir)
     return req_data.get_structure_seq(target_dir)
+
+def seq2domain(target_dir):
+    req_data = req(target_dir)
+    return req_data.get_domain_seq(target_dir)
 
 
 

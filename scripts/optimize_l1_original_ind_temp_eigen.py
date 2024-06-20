@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
-
+print("")
 from qdpy import algorithms, containers, plots
 import math
 import numpy as np
@@ -306,7 +306,7 @@ def set_eval(ind, averageModel, scale=10.0, ):
 def my_callback(algo,ind, added, xattr):
     container = algo.container
     index = container._index_grid_features(ind.features)
-    print("TELL", ind.fitness, ind.features, index, added, xattr)
+    # print("TELL", ind.fitness, ind.features, index, added, xattr)
     if added:
         value = container.quality_array[index]
         if np.isnan(value):
@@ -317,7 +317,7 @@ def my_callback(algo,ind, added, xattr):
             print("MORE DIRECT ADD", can_be_added,index3)
     
 
-def run_qdpy(dirpath="test"):
+def run_qdpy(dirpath="/home/user/SA-EDS/results"):
     # Create container and algorithm. Here we use MAP-Elites, by illuminating a Grid container by evolution.
         
     grid = containers.Grid(
@@ -343,20 +343,19 @@ def run_qdpy(dirpath="test"):
     # regr_loaded = pickle.load(f)
     # f.close()
 
-    with open('../saved_model/bagging_model_L1_initial.pkl', 'rb') as f:
+    with open('/home/user/SA-EDS/saved_model/bagging_model_L1_initial.pkl', 'rb') as f:
         regr_loaded = pickle.load(f)
 
-    averageModel = getModel('../../saved_model/l1_ave_230530')
-    # deviationModel = getModel('../../saved_model/l1_dev_0605')
-    # eval_fn = functools.partial(set_eval,averageModel=averageModel,deviationModel=deviationModel)
     eval_fn = functools.partial(set_eval,averageModel=regr_loaded)
+    logger.log_base_path = dirpath 
+    logger.final_filename = "final.p"
     best = algo.optimise(eval_fn)
     print(algo.summary())
 
     # Plot the results
-    logger.final_filename = dirpath + "/qdpy_log_l1_230606.p"
-    print(logger.final_filename)
-    plots.default_plots_grid(logger)
+    
+    plots.default_plots_grid(logger) # plotされたものがどこかわからない final.pがどうしても実行時のディレクトリになってしまう
+    # print("All results are available in the '%s' pickle file." % logger.final_filename)
     print("All results are available in the '%s' pickle file." % logger.final_filename)
 
 def main():

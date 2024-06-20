@@ -98,7 +98,7 @@ class L3Individual(Individual):
     
     def init_structure(self):
         # input/structure_seq/input_seq_L3.csv
-        f = open("../../input/structure_seq/input_seq_L3.csv", "r")
+        f = open("/home/user/SA-EDS/conf/input_seq_L3.csv", "r")
         lst = csv.reader(f)
         structure = []
         for l in lst:
@@ -243,9 +243,9 @@ class L3Evo(Evolution):
     def _internal_ask(self, base_ind):
         return super()._internal_ask(base_ind)    
 
-def getModel(path="../../saved_model/L3_ave_230530"):
-    model = load_model(path)
-    return model
+# def getModel(path="../../saved_model/L3_ave_230530"):
+#     model = load_model(path)
+#     return model
 
 def seq_ratio_val(ind):
     base_dic = {
@@ -340,15 +340,7 @@ def run_qdpy(dirpath="test"):
     # Create a logger to pretty-print everything and generate output data files
     logger = algorithms.AlgorithmLogger(algo)
 
-    # averageModel = getModel('../../saved_model/L3_ave_230613')
-    # deviationModel = getModel('../../saved_model/L3_dev_230613')
-    # averageModel = getModel(path="../saved_model/l3_ave_20230822")
-    # deviationModel = getModel(path='../../saved_model/l3_dev_20230822')
-    # averageModel = getModel(path="../../saved_model/l3_ave_20230830")
-    # deviationModel = getModel(path='../../saved_model/l3_dev_20230830')
-    averageModel = getModel(path="../../saved_model/l3_ave_20230904")
-    # deviationModel = getModel(path='../../saved_model/l3_dev_20230904')
-    with open('../saved_model/bagging_model_L3_initial.pkl', 'rb') as f:
+    with open('/home/user/SA-EDS/saved_model/bagging_model_L3_initial.pkl', 'rb') as f:
         regr_loaded = pickle.load(f)
 
     eval_fn = functools.partial(set_eval,averageModel=regr_loaded)

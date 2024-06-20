@@ -11,26 +11,43 @@ First, download NUPACK version 4.0.1.8, and put it in the root directory of the 
 ```
 tar xvf nupack-4.0.1.8.tar.gz
 cd nupack-4.0.1.8
+```
+
+```
+cd oxDNA
 mkdir build && cd build
 cmake .. && make -j 20
-make install
+cmake .. && make -j4
 ```
 
 ### Usage
+
+After all dependencies are installed (including NUPACK), you should be able to launch the Python scripts of this repository.
+1. make data from results of oxDNA. 
+first, download initial.zip and unzip in root directory.
+then, 
+then this generate `datasete/L{1-3}_data_initial.pkl`
+```
+./runDocker.sh scripts/reshape.py L1
+./runDocker.sh scripts/reshape.py L2
+./runDocker.sh scripts/reshape.py L3
 ```
 
+2. generate surrogate model which predict average of DNA volume.
+The figure of results will save as `results/plot_L{1-3}.png`, and the model will be saved in `saved_model`.
 ```
-### Quickstart
-After all dependencies are installed (including NUPACK), you should be able to launch the Python scripts of this repository.
+./runDocker.sh scripts/plotVolume.py L1
+./runDocker.sh scripts/plotVolume.py L2
+./runDocker.sh scripts/plotVolume.py L3
 ```
-./scripts/predictVolumeAll.py
-./scripts/plotMap.py
+
+3. based on the surrogate model, we can map the result of Quality Diversity.
 ```
-### with Docker
+./runDocker.sh scripts/optimize_l1_original_ind_temp_eigen.py 
+./runDocker.sh scripts/optimize_l2_original_ind_temp_eigen.py 
+./runDocker.sh scripts/optimize_l3_original_ind_temp_eigen.py 
 ```
-docker build -t sa-eds .
-docker run sa-eds
-```
+→ final.pの場所
 
 ## results
 ![compararison with regressor for L1](fig/regressor_scores_L1.png)
@@ -40,7 +57,7 @@ docker run sa-eds
 - Maya Hyakuzuka
     - email: g1920534 "at" is "dot" ocha "dot" ac "dot" jp
 - Nathanael Aubert-Kato: Main author and maintainer.
-    - ResearchGate
+    - [ResearchGate](https://www.researchgate.net/profile/Nathanael-Aubert-Kato)
     - email: naubertkato "at" is "dot" ocha "dot" ac "dot" jp
 
 # todo

@@ -1,4 +1,6 @@
 qdpy
-tensorflow
+tensorflow==2.10
 keras
-scikit-learn
+scikit-learn==1.2.1
+networkx
+numpy

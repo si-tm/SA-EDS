@@ -18,7 +18,10 @@ import os
 def make_bonds_file():
 
 	command_for_data =  'analysis_data_output_1 = { \n name = stdout \n print_every = 1 \n col_1 = { \n type=pair_energy \n} \n}'
-	PROCESSPROGRAM = os.path.join(os.path.dirname(__file__), "../build/bin/DNAnalysis")
+	# PROCESSPROGRAM = os.path.join(os.path.dirname(__file__), "../build/bin/DNAnalysis")
+	PROCESSPROGRAM = os.path.join("/home/user/SA-EDS/oxDNA/build/bin", "DNAnalysis")
+	# PROCESSPROGRAM = os.path.join("oxDNA/build/bin", "DNAnalysis")
+
 
 	if (len(sys.argv) < 3):
 		print('Usage %s input_file trajectory_file topology_file [confid]' % sys.argv[0])
@@ -55,6 +58,7 @@ def make_bonds_file():
 	launchcommand = inputfile + ' trajectory_file='+tempfile_obj.name+' '+command_for_data
 
 	launchargs = [PROCESSPROGRAM, inputfile ,'trajectory_file='+tempfile_obj.name,command_for_data]
+	launchargs = ["/bin/bash", PROCESSPROGRAM, inputfile ,'trajectory_file='+tempfile_obj.name,command_for_data]
 	# launchargs = [PROCESSPROGRAM,"-v", inputfile ,'trajectory_file='+tempfile_obj.name,command_for_data]
 	#print command_for_data
 	#launchargs = [PROCESSPROGRAM,inputfile ,'trajectory_file='+conffile,command_for_data]

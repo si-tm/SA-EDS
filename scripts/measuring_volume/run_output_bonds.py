@@ -12,8 +12,10 @@ def make_bonds(target_dir):
     conf = gtf.get_conf(target_dir)
     input = gtf.get_new_input(target_dir)
 
-    path="measuring_volume/output_bonds.py"
-    subprocess.call(["python3", path, input, conf, top])
+    path="/home/user/SA-EDS/scripts/measuring_volume/output_bonds.py"
+    
+    # subprocess.call(["ls", "-l", "/home/user/SA-EDS/oxDNA/build/bin/" ,"|", "grep", "DNAanalysis"])
+    subprocess.call(["/home/user/venv/bin/python3", path, input, conf, top])
 
 def main():
     make_bonds("../input/results/oxdna_ked/seqA/A5/test_a5_200000_1")
