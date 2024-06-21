@@ -59,9 +59,9 @@ results will be saved in `results`.
 
 ## results
 ### compararison with regressor
-![compararison with regressor for L1](fig/regressor_scores_L1.png)
-![compararison with regressor for L2](fig/regressor_scores_L2.png)
-![compararison with regressor for L3](fig/regressor_scores_L3.png)
+![compararison with regressor for L1](fig/regressor_scores_L1.png)  
+![compararison with regressor for L2](fig/regressor_scores_L2.png)  
+![compararison with regressor for L3](fig/regressor_scores_L3.png)  
 
 
 ### Authors
