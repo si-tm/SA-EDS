@@ -94,12 +94,16 @@ class L2Individual(Individual):
     
     def init_structure(self):
         # input/structure_seq/input_seq_L2.csv
-        f = open("../../input/structure_seq/input_seq_L2.csv", "r")
+        f = open("/home/user/SA-EDS/conf/input_seq_L2.csv", "r")
         lst = csv.reader(f)
         structure = []
         for l in lst:
+            tmp = ""
             for elem in l:
-                structure.append(elem)
+                tmp += elem
+                tmp += " "
+            structure.append(tmp[:-1])
+        # print(structure)
         return structure
 
     def reinit(self):
@@ -109,7 +113,7 @@ class L2Individual(Individual):
         self.complexes = ComplexSet(strands=strands_lst, complexes=SetSpec(**self.specs))
         self.evaluation = None
         self.tube = Tube(dict(self.strands), complexes=SetSpec(**self.specs), name =f"tube")
-        self.eigenvalue_2 = cn.ind2eigen(type_of_l="L1", indexes=self.indexes, structure=self.structure, temperature=self.temp, domains=self.domains)         
+        self.eigenvalue_2 = cn.ind2eigen(type_of_l="L2", indexes=self.indexes, structure=self.structure, temperature=self.temp, domains=self.domains)         
         self.input = self.indexes + [self.temp] + [self.eigenvalue_2]
     
     def indexes2strands(self, indexes, concentration=1e-10):
@@ -328,10 +332,8 @@ def run_qdpy(dirpath="/home/user/SA-EDS/results"):
     algo = L2Evo(
         grid, 
         # budget=6000, 
-        # budget=10000, 
-        # batch_size=100,
-        budget=100, 
-        batch_size=10,
+        budget=10000, 
+        batch_size=100,
         optimisation_task="maximization")
     
     # Create a logger to pretty-print everything and generate output data files

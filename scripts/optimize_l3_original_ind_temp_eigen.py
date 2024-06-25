@@ -97,13 +97,17 @@ class L3Individual(Individual):
         return domains
     
     def init_structure(self):
-        # input/structure_seq/input_seq_L3.csv
+        # input/structure_seq/input_seq_L2.csv
         f = open("/home/user/SA-EDS/conf/input_seq_L3.csv", "r")
         lst = csv.reader(f)
         structure = []
         for l in lst:
+            tmp = ""
             for elem in l:
-                structure.append(elem)
+                tmp += elem
+                tmp += " "
+            structure.append(tmp[:-1])
+        # print(structure)
         return structure
 
     def reinit(self):
@@ -319,7 +323,7 @@ def set_eval(ind, averageModel, scale=30.0 ):
     # print(features, score)
     return (score,), features
 
-def run_qdpy(dirpath="test"):
+def run_qdpy(dirpath="/home/user/SA-EDS/results"):
     # Create container and algorithm. Here we use MAP-Elites, by illuminating a Grid container by evolution.
         
     grid = containers.Grid(
@@ -331,8 +335,8 @@ def run_qdpy(dirpath="test"):
     
     algo = L3Evo(
         grid, 
-        budget=10000, 
-        # batch_size=1000,
+        # budget=10000, 
+        budget=1000,
         # budget=3000, 
         batch_size=100,
         optimisation_task="maximization")
@@ -344,16 +348,28 @@ def run_qdpy(dirpath="test"):
         regr_loaded = pickle.load(f)
 
     eval_fn = functools.partial(set_eval,averageModel=regr_loaded)
+    logger.log_base_path = dirpath 
+    logger.final_filename = "final.p"
     best = algo.optimise(eval_fn)
     print(algo.summary())
 
     # Plot the results
-    now = datetime.datetime.now()
-    timestamp = str(now.year) + str(now.month).zfill(2) + str(now.day).zfill(2)
-    logger.final_filename = dirpath + f"/qdpy_log_L3_{timestamp}.p"
-    print(logger.final_filename)
-    plots.default_plots_grid(logger)
+    
+    plots.default_plots_grid(logger) # plotされたものがどこかわからない final.pがどうしても実行時のディレクトリになってしまう
+    # print("All results are available in the '%s' pickle file." % logger.final_filename)
     print("All results are available in the '%s' pickle file." % logger.final_filename)
+
+    # eval_fn = functools.partial(set_eval,averageModel=regr_loaded)
+    # best = algo.optimise(eval_fn)
+    # print(algo.summary())
+
+    # # Plot the results
+    # now = datetime.datetime.now()
+    # timestamp = str(now.year) + str(now.month).zfill(2) + str(now.day).zfill(2)
+    # logger.final_filename = dirpath + f"/qdpy_log_L3_{timestamp}.p"
+    # print(logger.final_filename)
+    # plots.default_plots_grid(logger)
+    # print("All results are available in the '%s' pickle file." % logger.final_filename)
 
 def main():
     run_qdpy()

@@ -50,7 +50,7 @@ def get_data():
         new_x.append(int(key[0]))
         new_x.append(float(domain_seq_dic[key]['eigenValue_2']))
         x_data.append(new_x)
-        y_data.append(value_dic[key]['mean_volume'])
+        y_data.append(value_dic[(key[0], key[1][1:])]['mean_volume'])
 
     x_data = np.array(x_data)
     y_data = np.array(y_data)
@@ -103,8 +103,8 @@ def bagging_regressor(x_train,x_test,y_train,y_test):
     er = er.fit(X, y)
 
         # Save the model
-    # with open(f'../saved_model/bagging_model_{type_of_l}_initial.pkl', 'wb') as f:
-    #     pickle.dump(er, f)
+    with open(f'/home/user/SA-EDS/saved_model/bagging_model_{type_of_l}_initial.pkl', 'wb') as f:
+        pickle.dump(er, f)
     
 
     test_predictions = er.predict(x_test)
