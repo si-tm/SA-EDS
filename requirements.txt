@@ -3,4 +3,4 @@ tensorflow==2.10
 keras
 scikit-learn==1.2.1
 networkx
-numpy
+numpy==1.26.4

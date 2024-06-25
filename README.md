@@ -44,9 +44,9 @@ then this generate `datasete/L{1-3}_data_initial.pkl`
 2. generate surrogate model which predict average of DNA volume.
 The figure of results will save as `results/plot_L{1-3}.png`, and the model will be saved in `saved_model`.
 ```
-./runDocker.sh scripts/plotVolume.py L1
-./runDocker.sh scripts/plotVolume.py L2
-./runDocker.sh scripts/plotVolume.py L3
+./runDocker.sh scripts/predictVolume.py L1
+./runDocker.sh scripts/predictVolume.py L2
+./runDocker.sh scripts/predictVolume.py L3
 ```
 
 3. based on the surrogate model, we can map the result of Quality Diversity.
@@ -62,6 +62,11 @@ results will be saved in `results`.
 ![compararison with regressor for L1](fig/regressor_scores_L1.png)  
 ![compararison with regressor for L2](fig/regressor_scores_L2.png)  
 ![compararison with regressor for L3](fig/regressor_scores_L3.png)  
+
+### mapped preliminary dataset
+
+![](fig/performancesGrid_L1.png)
+![](fig/performancesGrid_L2.png)
 
 
 ### Authors
