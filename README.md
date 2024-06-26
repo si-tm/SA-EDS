@@ -71,6 +71,8 @@ results will be saved in `results`.
 ![](fig/performancesGrid_L1.png)
 #### L2
 ![](fig/performancesGrid_L2.png)
+#### L3
+![](fig/performancesGrid_L3.png)
 
 
 ### Authors
