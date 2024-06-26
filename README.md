@@ -68,11 +68,13 @@ results will be saved in `results`.
 
 ### mapped preliminary dataset
 #### L1
-![](fig/performancesGrid_L1.png)
+<img src="fig/performancesGrid_L1.png" width="300">
+
 #### L2
-![](fig/performancesGrid_L2.png)
+<img src="fig/performancesGrid_L2.png" width="300">
+
 #### L3
-![](fig/performancesGrid_L3.png)
+<img src="fig/performancesGrid_L3.png" width="300">
 
 
 ### Authors
