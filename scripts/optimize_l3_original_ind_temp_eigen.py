@@ -335,8 +335,8 @@ def run_qdpy(dirpath="/home/user/SA-EDS/results"):
     
     algo = L3Evo(
         grid, 
-        # budget=10000, 
-        budget=1000,
+        budget=10000, 
+        # budget=1000,
         # budget=3000, 
         batch_size=100,
         optimisation_task="maximization")
