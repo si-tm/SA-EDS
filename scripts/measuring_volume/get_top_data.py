@@ -4,7 +4,7 @@ import sys
 sys.path.append('../')
 sys.path.append('common')
 # from common import get_target_file as gtf
-import common.get_target_file as gtf
+import measuring_volume.get_target_file as gtf
 import csv 
 import glob
 
