@@ -68,7 +68,7 @@ def convexhull_volume(x, y, z):
 def execute_traj2r(target_dir):
     traj = gtf.get_conf(target_dir)
     top = gtf.get_top(target_dir)
-    subprocess.run(["measuring_volume/traj2r.py", "xyz", traj, top])
+    subprocess.run(["/home/user/SA-EDS/scripts/measuring_volume/traj2r.py", "xyz", traj, top])
     return traj
 
 # 同期処理？？
@@ -83,9 +83,10 @@ def get_particle2r(target_dir):
     if path:
         print(f"{path} is exist.")
     else:
-        execute_traj2r(target_dir)
+        path = execute_traj2r(target_dir)
         # これが終わったら
-        print()
+
+
 
     result_r_filename = gtf.get_rxyz(target_dir)
     print(result_r_filename)

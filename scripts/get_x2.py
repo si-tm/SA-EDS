@@ -16,23 +16,9 @@ import glob
 def get_target_x(target_dir):
     seq_file_name = gtf.get_seq(target_dir)
     seq = seq_file_name.split("/")[-1][3]
-
     seq_lst = []
+    seq_lst = gsfq.seq2structure(target_dir)
 
-    if cd.is_random(target_dir):
-        seq_lst = gsfq.seq2structure(target_dir)
-    if cd.is_fromQD(target_dir):
-        seq_lst = gsfq.seq2structure(target_dir)
-    if cd.is_fromKED(target_dir):
-        seq_lst = gsfq.seq2structure(target_dir)
-    if cd.is_fromKED(target_dir):
-        seq_lst = gsfq.seq2structure(target_dir)
-    else:
-        # seq_lst = gsfq.seq2structure(target_dir)
-        # seq_lst = gsfp.seq2structure(seq)
-        seq_lst = gsfq.seq2structure(target_dir)
-
-    # print(seq_lst)
     return seq_lst
 
 def get_x_dic(csv_path, dirs):
@@ -80,6 +66,7 @@ def make_x_dir_initial():
     dir2domainseq_dic = {}
 
     type_of_l = sys.argv[1]
+    target_dir = sys.argv[2]
     for dir in dirs:
         target = dir
         csv_path = "/home/user/SA-EDS/conf/input_seq_" + type_of_l +".csv"
@@ -98,7 +85,7 @@ def make_x_dir_initial():
 
         dir2domainseq_dic.update(merged_dict)
 
-    result_path = "/home/user/SA-EDS/dataset/x_initial_" + type_of_l + ".pkl"
+    result_path = "/home/user/SA-EDS/dataset/x_" + target_dir +"_" + type_of_l + ".pkl"
     print(result_path)
     with open(result_path, "wb") as tf:
         pickle.dump(dir2domainseq_dic,tf)

@@ -2,8 +2,8 @@ import sys
 sys.path.append('../')
 sys.path.append('.')
 sys.path.append('measuring_volume/')
-import get_target_file as gtf
-import check_dir as cd
+import common.get_target_file as gtf
+import common.check_dir as cd
 import subprocess
 
 def make_bonds(target_dir):

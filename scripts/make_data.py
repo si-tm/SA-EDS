@@ -202,7 +202,6 @@ def make_data_dir_initial(path, type_of_l, target):
     # input/results/fromQD/r20230613134109/r1686027494794-20/*
     dirs = glob.glob(path + "/*")
     dic = {}
-    print("dirs ", dirs)
     # y作る
     for index, d in enumerate(dirs):
         print(datetime.datetime.now(), " : ", index + 1, "/", len(dirs))
@@ -323,9 +322,9 @@ def make_initial():
             initial_dic[(temp, dir)] = {'ratio_of_volume': mean_ratio_of_volume , 'mean_volume': mean_mean_volume , 'deviation_of_volume': mean_deviation_of_volume }
         # {(temp, dir) : {'ratio_of_volume': ... , 'mean_volume': ..., 'deviation_of_volume': ...}}
         # initial_dic[( , dir)] = {}
-        print(initial_dic)
 
-        result_path =  "home/user/SA-EDS/dataset/" + type_of_l + "_data_" + "initial" + ".pkl"
+        result_path =  "home/user/SA-EDS/dataset/" + type_of_l + "_data_" + target + ".pkl"
+        print(result_path)
 
         with open(result_path, "wb") as tf:
             pickle.dump(initial_dic,tf)

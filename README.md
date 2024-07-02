@@ -31,14 +31,17 @@ chmod 777 build.sh
 ### Usage
 
 After all dependencies are installed (including NUPACK), you should be able to launch the Python scripts of this repository.
+
+target_name is `{initial, int_initial}`.
+
 1. make data from results of oxDNA. 
 first, download initial.zip and unzip in root directory.
 then, 
 then this generate `datasete/L{1-3}_data_initial.pkl`
 ```
-./runDocker.sh scripts/reshape.py L1
-./runDocker.sh scripts/reshape.py L2
-./runDocker.sh scripts/reshape.py L3
+./runDocker.sh scripts/reshape.py L1 {target_name}
+./runDocker.sh scripts/reshape.py L2 {target_name}
+./runDocker.sh scripts/reshape.py L3 {target_name}
 ```
 
 2. generate surrogate model which predicts the average of DNA volume.

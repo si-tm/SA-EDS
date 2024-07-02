@@ -149,7 +149,6 @@ def get_req(dir_path):
 
 def get_rxyz(dir_path):
     d = file_dic(dir_path)
-    # print(d.keys())
     if not "rxyz" in d:
         return False
     return d["rxyz"]
