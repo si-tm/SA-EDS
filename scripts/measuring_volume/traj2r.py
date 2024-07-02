@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/home/user/venv/bin/python3
 
 import sys, os
 try:
@@ -60,6 +60,8 @@ def import_model_constants():
     PI = np.pi
     # model = os.path.join(os.path.dirname(__file__), "../src/model.h")
     model = os.path.join(os.path.dirname(__file__), "model.h")
+    model = "/home/user/SA-EDS/scripts/measuring_volume/model.h"
+    print("model", model)
     f = open(model)
     for line in f.readlines():
         # line = line.strip().partition("//")[0].strip()

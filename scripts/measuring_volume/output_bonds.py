@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/home/user/venv/bin/python3
 
 #A utility that prints out the number of hydrogen bonds between different strands in the system 
 
@@ -77,9 +77,12 @@ def make_bonds_file():
 		# launchargs = [PROCESSPROGRAM,launchcommand]
 		if counter == confid:
 			myinput = subprocess.Popen(launchargs,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			print("myinput", myinput)
 			mystdout,mystderr = myinput.communicate()
 			str_mystdout = mystdout.decode("utf-8")
 			str_mystderr = mystderr.decode("utf-8")
+			# /home/user/SA-EDS/oxDNA/build/bin/DNAnalysis: /home/user/SA-EDS/oxDNA/build/bin/DNAnalysis: cannot execute binary file
+			print("str_mystderr", str_mystderr)
 			
 			bonds_file.write(str_mystdout)
 			sys.exit(1)
