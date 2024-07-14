@@ -83,12 +83,12 @@ def random_file_dic(dir_path):
             fd["rxyz"] = f
         elif "bonds" in f:
             fd[key] = f
-        # elif "trajectory" in f:
-        #     fd["trajectory" + "_" + key[-1]] = f
+        elif "trajectory" in f and (ord(f[-1]) - ord('0')) >= 0 and (ord(f[-1]) - ord('0')) <= 9:
+            fd["trajectory" + f[-1]] = f
         elif "-e" in f:
             continue
         else:
-            i = 0
+            i = 1
             basekey = key
             while key in fd:
                 print("WARNING!! conflicting keys", key, f, fd[key])
@@ -104,7 +104,7 @@ def random_file_dic(dir_path):
     
     # for f in fd:
     #     print(f, fd[f])
-    
+   
     return fd
 
 def get_conf(dir_path):
