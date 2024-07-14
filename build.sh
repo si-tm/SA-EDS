@@ -11,12 +11,20 @@ fi
 currentdir=$(pwd)
 basename=`basename $currentdir`
 # docker run --rm -it -v "${currentdir}:/home/user/SA-EDS" -w /home/user/SA-EDS/oxDNA/ ubuntu:latest /bin/bash -c "apt-get update && apt-get install -y cmake make && mkdir build && cd build && echo pwd && cmake .. && make -j4"
-docker run --rm -it -v "${currentdir}:/home/user/SA-EDS" -w /home/user/SA-EDS/oxDNA/ ubuntu:latest /bin/bash -c "
+# docker run --rm -it -v "${currentdir}:/home/user/SA-EDS" -w /home/user/SA-EDS/oxDNA/ ubuntu:latest /bin/bash -c "
+#   apt-get update &&
+#   apt-get install -y cmake make g++ &&
+#   mkdir build &&
+#   cd build &&
+#   echo pwd &&
+#   cmake .. &&
+#   make -j4
+# "
+docker run --rm -it -v "${currentdir}:/home/user/SA-EDS" -w /home/user/SA-EDS/oxDNA/ ubuntu:22.04 /bin/bash -c "
   apt-get update &&
   apt-get install -y cmake make g++ &&
-  mkdir build &&
+  mkdir -p build &&
   cd build &&
-  echo pwd &&
   cmake .. &&
   make -j4
 "

@@ -147,6 +147,36 @@ def convexhull_volume_all_strands_meandev(target_dir):
 
     return mean_volume, dev_volume
 
+def get_max_convexhull_volume(target_dir):
+    strands2particle, particle2strand = gtd.make_initial_strands_data(target_dir)
+    particle2r = get_particle2r(target_dir)
+    
+    volumes = {}
+
+    strands2particle, particle2strand = gtd.get_particle_strands_data(target_dir)
+    print(len(strands2particle))
+
+
+    for strand in strands2particle:
+        x, y, z = get_r(particle2r, strands2particle[strand])
+        volumes[strand] = convexhull_volume(x, y, z)
+
+    print(volumes)
+    
+    mean_volume = 0.0
+    num_of_strands = float(len(strands2particle))
+
+    max_vol = 0
+    target_strand = 0
+    for strand in volumes:
+        if max_vol < volumes[strand]:
+            max_vol = volumes[strand]
+            target_strand = strand
+    print(strands2particle[target_strand])
+
+    return strands2particle[target_strand]
+    
+
 
 def test():
     # target_dir="../input/results/oxdna_ked/seqA/A4/test_a4_200000_1"

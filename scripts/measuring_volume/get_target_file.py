@@ -83,8 +83,8 @@ def random_file_dic(dir_path):
             fd["rxyz"] = f
         elif "bonds" in f:
             fd[key] = f
-        # elif "trajectory" in f:
-        #     fd["trajectory" + "_" + key[-1]] = f
+        elif "trajectory" in f and (ord(f[-1]) - ord('0')) >= 0 and (ord(f[-1]) - ord('0')) <= 9:
+            fd["trajectory" + "_" + key[-1]] = f
         elif "-e" in f:
             continue
         else:

@@ -36,7 +36,6 @@ def check_file(file_name):
 
 def new_input(target_dir):
     fd = gtf.file_dic(target_dir)
-
     new_input_file_name = "/".join(fd["input"].split("/")[:-1]) + "/new_" + fd["input"].split("/")[-1]
     print(new_input_file_name + " is created")
     new_input_file = open(new_input_file_name, "w")

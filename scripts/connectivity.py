@@ -167,10 +167,11 @@ def calcEigenvalues(G):
 #     print(e)
 
 def main():
-    if len(sys.argv) != 2:
-        print("usage : python3 connectivity L{1-3}")
+    if len(sys.argv) != 3:
+        print("usage : python3 connectivity L{1-3} target")
     type_of_l = sys.argv[1]
-    file_path=f"home/user/SA-EDS/dataset/x_initial_{type_of_l}.pkl"
+    target = sys.argv[2]
+    file_path=f"home/user/SA-EDS/dataset/x_{target}_{type_of_l}.pkl"
     f = open(file_path, "rb")
     data = pickle.load(f)
     for (temp, dir) in data:

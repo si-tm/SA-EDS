@@ -59,6 +59,7 @@ def make_bonds_file():
 
 	launchargs = [PROCESSPROGRAM, inputfile ,'trajectory_file='+tempfile_obj.name,command_for_data]
 	launchargs = ["/bin/bash", PROCESSPROGRAM, inputfile ,'trajectory_file='+tempfile_obj.name,command_for_data]
+	launchargs = ["." + PROCESSPROGRAM, inputfile ,'trajectory_file='+tempfile_obj.name,command_for_data]
 	# launchargs = [PROCESSPROGRAM,"-v", inputfile ,'trajectory_file='+tempfile_obj.name,command_for_data]
 	#print command_for_data
 	#launchargs = [PROCESSPROGRAM,inputfile ,'trajectory_file='+conffile,command_for_data]
@@ -76,13 +77,13 @@ def make_bonds_file():
 		# os.system(PROCESSPROGRAM+' '+launchcommand)
 		# launchargs = [PROCESSPROGRAM,launchcommand]
 		if counter == confid:
+			# /usr/bin/bash
 			myinput = subprocess.Popen(launchargs,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-			print("myinput", myinput)
+			subprocess.run(["chmod", "+x", "/home/user/SA-EDS/oxDNA/build/bin/DNAnalysis"])
 			mystdout,mystderr = myinput.communicate()
 			str_mystdout = mystdout.decode("utf-8")
 			str_mystderr = mystderr.decode("utf-8")
 			# /home/user/SA-EDS/oxDNA/build/bin/DNAnalysis: /home/user/SA-EDS/oxDNA/build/bin/DNAnalysis: cannot execute binary file
-			print("str_mystderr", str_mystderr)
 			
 			bonds_file.write(str_mystdout)
 			sys.exit(1)
