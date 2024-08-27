@@ -49,7 +49,9 @@ The figure of results will be saved as `results/plot_L{1-3}.png`, and the model 
 ```
 ./runDocker.sh scripts/predictVolume.py L1
 ./runDocker.sh scripts/predictVolume.py L2
-./runDocker.sh scripts/predictVolume.py L3
+./runDocker.sh scripts/predictVolume.py L3 initial
+
+./runDocker.sh scripts/predict_curve.py L3 int_initial
 ```
 
 3. based on the surrogate model, we can map the result of Quality Diversity.
@@ -58,6 +60,7 @@ results will be saved in `results`.
 ./runDocker.sh scripts/optimize_l1_original_ind_temp_eigen.py 
 ./runDocker.sh scripts/optimize_l2_original_ind_temp_eigen.py 
 ./runDocker.sh scripts/optimize_l3_original_ind_temp_eigen.py 
+./runDocker.sh scripts/qd_l3.py 
 ```
 
 ## results

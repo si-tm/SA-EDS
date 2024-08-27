@@ -250,14 +250,16 @@ if __name__ == '__main__':
             temp_dic[tmp_temp]["c"] += c
             temp_dic[tmp_temp]["nb"] += 1
             print(a, b, c)
-        # break # 後で消す
 
         for temp in temp_lst:
             if temp_dic[temp]["nb"] != 0:
                 data[(temp, dir10[1:])]["sigmoid"] = {"a" : temp_dic[temp]["a"] / temp_dic[temp]["nb"], "b" : temp_dic[temp]["b"] / temp_dic[temp]["nb"], "c" : temp_dic[temp]["c"] / temp_dic[temp]["nb"]}
 
-    # with open(file_path, 'wb') as file:
-    #     pickle.dump(data, file)
+    with open(file_path, 'wb') as file:
+        pickle.dump(data, file)
+
+
+
 
     # filename = "int_initial/L3_initial_0/L3-GA100000-0.50-ERT-0_277_2/trajectory_L3-GA100000-0.50-ERT-0_277_2.dat"
     # extra_path = "int_initial/L3_initial_0/L3-GA100000-0.50-ERT-0_277_2/"

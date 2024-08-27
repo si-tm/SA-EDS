@@ -28,11 +28,12 @@ import tensorflow as tf
 
 # type_of_l = "L1"
 type_of_l = sys.argv[1]
+target = sys.argv[2]
 
 def get_data():
     # [0, 1, ... 0] + temperature
-    f1 = open(f"home/user/SA-EDS/dataset/x_initial_{type_of_l}.pkl", "rb")
-    f2 = open(f"home/user/SA-EDS/dataset/{type_of_l}_data_initial.pkl", "rb")
+    f1 = open(f"home/user/SA-EDS/dataset/x_{target}_{type_of_l}.pkl", "rb")
+    f2 = open(f"home/user/SA-EDS/dataset/{type_of_l}_data_{target}.pkl", "rb")
     domain_seq_dic = pickle.load(f1)
     value_dic = pickle.load(f2)
     domain_lst = mis.seq_lst(f"home/user/SA-EDS/conf/input_seq_{type_of_l}.csv")
@@ -103,7 +104,7 @@ def bagging_regressor(x_train,x_test,y_train,y_test):
     er = er.fit(X, y)
 
         # Save the model
-    with open(f'/home/user/SA-EDS/saved_model/bagging_model_{type_of_l}_initial.pkl', 'wb') as f:
+    with open(f'/home/user/SA-EDS/saved_model/bagging_model_{type_of_l}_{target}.pkl', 'wb') as f:
         pickle.dump(er, f)
     
 
@@ -132,12 +133,12 @@ def bagging_regressor(x_train,x_test,y_train,y_test):
     plt.plot([0,max_value], res.intercept + res.slope*np.array([0, max_value]), 'r', label='fitted line')
 
     plt.show()
-    plt.savefig(f'home/user/SA-EDS/results/plot_{type_of_l}.png')  # Save the plot as an image file instead of showing it
-    print(f"Plot saved as plot_{type_of_l}.png")
+    plt.savefig(f'home/user/SA-EDS/results/plot_{type_of_l}_{target}.png')  # Save the plot as an image file instead of showing it
+    print(f"Plot saved as plot_{type_of_l}_{target}.png")
 
 if __name__ == "__main__": 
     # x_train, x_test, y_train, y_test = get_data_from_f()
-    if len(sys.argv) != 2:
-        print("usage : python3 predicvVolume.py {L1, L2, L3}")
+    if len(sys.argv) != 3:
+        print("usage : python3 predicvVolume.py {L1, L2, L3} target")
     x_train, x_test, y_train, y_test = get_data()
     bagging_regressor(x_train, x_test, y_train, y_test)
