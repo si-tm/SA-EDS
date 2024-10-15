@@ -113,7 +113,7 @@ def bagging_regressor(x_train,x_test,y_train,y_test):
     res = linregress(y_test, test_predictions)
 
     if type_of_l == "L1" or type_of_l == "L2":
-        max_value = 20
+        max_value = 30
     elif type_of_l == "L3":
         max_value = 150
 
