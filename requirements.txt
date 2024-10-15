@@ -4,3 +4,4 @@ keras
 scikit-learn==1.2.1
 networkx
 numpy==1.26.4
+seaborn

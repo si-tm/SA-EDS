@@ -17,12 +17,10 @@ from optimize_l3_original_ind_temp_eigen import L3Individual
 
 def make_req(type_of_l, filename, lst, target, result_path):
     temp_f = open("/home/user/SA-EDS/conf/requirement_" + type_of_l + ".txt", "r")
-    print(result_path + "r" + filename)
     if os.path.isdir(result_path + "r" + filename) == False:
         os.mkdir(result_path + "r" + filename) 
     # if os.path.isdir(result_path + "r" + target + "/r" + filename ) == False:
     #     os.mkdir(result_path + "r" + target + "/r" + filename ) 
-    print(result_path + "r" + filename + "/req_r" + filename + ".txt", "w") 
     new_f = open(result_path + "r" + filename + "/req_r" + filename + ".txt", "w") # ここ変える
     tmp_theme = ""
     for temp_l in temp_f:
@@ -32,7 +30,6 @@ def make_req(type_of_l, filename, lst, target, result_path):
                 new_f.write("# structure\n")
                 new_f.write("number_of_types = " + str(len(lst)) + "\n")
                 for l in lst:
-                    print(type(l), l)
                     new_f.write(l + "\n")
 
         if "# structure" == tmp_theme:
@@ -72,19 +69,18 @@ def readFinal(path, type_of_l, target, result_path):
         data = pickle.load(f)
     # ``data`` is now a dictionary containing all results, including the final container, all solutions, the algorithm parameters, etc.
     grid = data['container']
-    for ind in grid:
-        if 1:
+    for i, ind in enumerate(grid):
         # if ind.features[1] >= 2 and ind.features[1] <= 6: # ここ変える
-            lst = ind.indexes
-            comp = Ind2complexes(lst, type_of_l)
-            comp = req(comp)
-            print(f"fitness : {ind.fitness[0]} scaled energy : {ind.features[0]}, b/c : {ind.features[1]}, temp : {ind.temp}") # feature0 : よこ feature1 : たて
-            print(f"strand set : {[str(strand) for strand, conc in ind.strands]}")
-            print()
-            make_req(type_of_l=type_of_l, filename=ind.name, lst=comp, target=target, result_path=result_path) # ここ変える
-
-            # print(ind.fitness)
-            # print(ind.features)
+        lst = ind.indexes
+        comp = Ind2complexes(lst, type_of_l)
+        comp = req(comp)
+        # print(f"fitness : {ind.fitness[0]} scaled energy : {ind.features[0]}, b/c : {ind.features[1]}, temp : {ind.temp}") # feature0 : よこ feature1 : たて
+        # print(f"strand set : {[str(strand) for strand, conc in ind.strands]}")
+        # print()
+        make_req(type_of_l=type_of_l, filename=f"{ind.name}-{i}", lst=comp, target=target, result_path=result_path) # ここ変える
+        print(i, ind.name)
+        # print(ind.fitness)
+        # print(ind.features)
 
 def write_csv(path, type_of_l, target):
     with open(path, "rb") as f:
@@ -93,7 +89,7 @@ def write_csv(path, type_of_l, target):
     grid = data['container']
     with open("/home/user/SA-EDS/results/qd_output_L3.csv", "w") as f:
         f.write("fitness,scaled_energy,b/c,temp,strand_set\n")  # ヘッダーを書く
-        for ind in grid:
+        for i, ind in enumerate(grid):
             lst = ind.indexes
             comp = Ind2complexes(lst, type_of_l)
             # comp = req(comp)
@@ -101,23 +97,18 @@ def write_csv(path, type_of_l, target):
             scaled_energy = ind.features[0]
             bc = ind.features[1]
             temp = ind.temp
-            print([strand.name for strand, conc in ind.strands])
             strand_set = ",".join([strand.name for strand, conc in ind.strands])
             
-            print(f"{ind.features[0]} {ind.features[1]} {ind.features[2]}")
-            print(f"fitness : {fitness} scaled energy : {scaled_energy}, b/c : {bc}, temp : {temp}")
-            print(f"strand set : {strand_set}")
-            print()
 
             comp = ",".join(comp)
             
             f.write(f"{fitness},{scaled_energy},{bc},{temp},{comp} \n")
+ 
 
                 # make_req(type_of_l=type_of_l, filename=ind.name, lst=comp, target=target)  # 必要に応じてコメントアウトを解除
 
 
 def req(comp):
-    print(comp)
     new_comp = []
     for i, c in enumerate(comp):
         new_comp.append("s" + str(i) + " = " + c + " @initial 1.0 M")
@@ -126,8 +117,6 @@ def req(comp):
 def Ind2complexes(lst, type_of_l):
     f = open("/home/user/SA-EDS/conf/input_seq_" + type_of_l + ".csv", "r")
     r = csv.reader(f)
-
-    print(sum(lst))
 
     comp = []
 
@@ -142,7 +131,7 @@ def Ind2complexes(lst, type_of_l):
     
     for i, e in enumerate(lst):
         if e == 1:
-            print(seq_lst[i])
+            # print(seq_lst[i])
             comp.append(seq_lst[i])
 
 
@@ -161,7 +150,7 @@ def readFinals(path, type_of_l):
 
 def main(target, type_of_l, result_path):
     # path="results/optimizationresults_" + target + "/final.p" # ここ変える
-    write_csv(target, type_of_l, target)
+    # write_csv(target, type_of_l, target)
     readFinal(target, type_of_l, target, result_path)
     # readFinal(path, type_of_l, target) # ここ変える
 

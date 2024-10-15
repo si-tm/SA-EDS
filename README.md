@@ -60,8 +60,15 @@ results will be saved in `results`.
 ./runDocker.sh scripts/optimize_l1_original_ind_temp_eigen.py 
 ./runDocker.sh scripts/optimize_l2_original_ind_temp_eigen.py 
 ./runDocker.sh scripts/optimize_l3_original_ind_temp_eigen.py 
+
 ./runDocker.sh scripts/qd_l3.py 
 ```
+
+4. generate config file for oxDNA from results of QD.
+```
+./runDocker.sh scripts/get_ind
+```
+option!
 
 ## results
 ### compararison with regressor

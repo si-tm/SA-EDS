@@ -1,0 +1,89 @@
+INFO: seeding the RNG with 42
+INFO: Initializing backend 
+INFO: Simulation type: VMMC
+INFO: The generator will try to take into account bonded interactions by choosing distances between bonded neighbours no larger than 2.000000
+INFO: Converting temperature from Kelvin (277.000000 K) to simulation units (0.092333)
+INFO: Temperature change detected (new temperature: 3.85 C, 277.00 K), re-initialising the DNA interaction
+WARNING: Overwriting key `name' (`hb_conf/req_L3_1/r1724485246149-0-394/r1724485246149-0-394_277_1/energy_trap_r1724485246149-0-394_277_1.dat' to `conf/req_L3_1/r1724485246149-0-394/r1724485246149-0-394_277_1/hb_energy_trap_r1724485246149-0-394_277_1.dat')
+INFO: pid: 104
+INFO: (Cells.cpp) N_cells_side: 14, 14, 14; rcut=1.58377, IS_MC: 1
+INFO: N: 1245, N molecules: 25
+WARNING: maxclust < 0, setting it to N = 1245
+INFO: Not attempting to preserve topology; max_move_size = 21.6325
+INFO: RELEASE: 
+INFO: GIT COMMIT: 10e47b8a
+INFO: COMPILED ON: 03/09/24
+INFO: diffusion fixed.. -1281.71 -1281.71
+INFO: diffusion fixed.. -1319.72 -1319.72
+INFO: diffusion fixed.. -1331.96 -1331.96
+INFO: diffusion fixed.. -1380.52 -1380.52
+INFO: diffusion fixed.. -1349.79 -1349.79
+INFO: diffusion fixed.. -1386.29 -1386.29
+INFO: diffusion fixed.. -1393.82 -1393.82
+INFO: diffusion fixed.. -1393.37 -1393.37
+INFO: diffusion fixed.. -1406.97 -1406.97
+INFO: diffusion fixed.. -1415.93 -1415.93
+INFO: diffusion fixed.. -1402.95 -1402.95
+INFO: diffusion fixed.. -1425.6 -1425.6
+INFO: diffusion fixed.. -1398.87 -1398.87
+INFO: diffusion fixed.. -1413.68 -1413.68
+INFO: diffusion fixed.. -1438.38 -1438.38
+INFO: diffusion fixed.. -1421.5 -1421.5
+INFO: diffusion fixed.. -1415.08 -1415.08
+INFO: diffusion fixed.. -1441.15 -1441.15
+INFO: diffusion fixed.. -1432.45 -1432.45
+INFO: diffusion fixed.. -1424.51 -1424.51
+INFO: diffusion fixed.. -1412.11 -1412.11
+INFO: diffusion fixed.. -1435.03 -1435.03
+INFO: diffusion fixed.. -1407.49 -1407.49
+INFO: diffusion fixed.. -1430.24 -1430.24
+INFO: diffusion fixed.. -1442.41 -1442.41
+INFO: diffusion fixed.. -1427.28 -1427.28
+INFO: diffusion fixed.. -1448.14 -1448.14
+INFO: diffusion fixed.. -1447.05 -1447.05
+INFO: diffusion fixed.. -1438.28 -1438.28
+INFO: diffusion fixed.. -1444.29 -1444.29
+INFO: diffusion fixed.. -1442.84 -1442.84
+INFO: diffusion fixed.. -1454.75 -1454.75
+INFO: diffusion fixed.. -1441.46 -1441.46
+INFO: diffusion fixed.. -1446.11 -1446.11
+INFO: diffusion fixed.. -1442.6 -1442.6
+INFO: diffusion fixed.. -1452.42 -1452.42
+INFO: diffusion fixed.. -1452.37 -1452.37
+INFO: diffusion fixed.. -1444.39 -1444.39
+INFO: diffusion fixed.. -1460.41 -1460.41
+INFO: diffusion fixed.. -1461.44 -1461.44
+INFO: diffusion fixed.. -1459.47 -1459.47
+INFO: diffusion fixed.. -1450.89 -1450.89
+INFO: diffusion fixed.. -1460.34 -1460.34
+INFO: diffusion fixed.. -1448.41 -1448.41
+INFO: diffusion fixed.. -1463.8 -1463.8
+INFO: diffusion fixed.. -1456.71 -1456.71
+INFO: diffusion fixed.. -1471.83 -1471.83
+INFO: diffusion fixed.. -1451.3 -1451.3
+INFO: diffusion fixed.. -1456.61 -1456.61
+INFO: diffusion fixed.. -1447.73 -1447.73
+
+INFO: Total Running Time: 361721 s, per step: 72.3442 ms
+INFO: Timings, in seconds, by Timer (total, own, spent in children)
+> SimBackend                     361720.807 (100.0%)        5.618 (  0.0%)   361715.189 (100.0%)
+***> Rotations+Translations      361715.189 (100.0%)   361715.189 (100.0%)        0.000 (  0.0%)
+> Lists                               0.000 (  0.0%)        0.000 (  0.0%)        0.000 (  0.0%)
+
+INFO: END OF THE SIMULATION, everything went OK!
+INFO: Aggregated I/O statistics (set debug=1 for file-wise information)
+	  4.360 MB written to files
+	  0.000  B written to stdout/stderr
+	For a total of 1.21e-05 MB/s
+
+
+Please cite these publications for any work that uses the oxDNA simulation package
+- for the code:
+    * P. Šulc et al., J. Chem. Phys. 137, 135101 (2012)
+    * L. Rovigatti et al., J. Comput. Chem. 36, 1 (2015)
+- for the oxDNA model:
+    * T. E. Ouldridge et al., J. Chem. Phys, 134, 085101 (2011)
+- for the oxDNA2 model:
+    * B. E. K. Snodin et al., J. Chem. Phys. 142, 234901 (2015)
+- for the oxRNA model:
+    * P. Šulc et al., J. Chem. Phys. 140, 235102 (2014)

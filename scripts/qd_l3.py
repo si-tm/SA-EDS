@@ -326,7 +326,10 @@ def run_qdpy(dirpath="/home/user/SA-EDS/results"):
 
     # Plot the results
     
+    # gridを入れる
     plots.default_plots_grid(logger) 
+    # plotGridSubplots
+    # xlabel, ylabel
     print("All results are available in the '%s' pickle file." % logger.final_filename)
 
 def main():
