@@ -31,7 +31,7 @@ def main():
         print(f"Stabilities for {target}: {stabilities}")
         for step in steps:
             if len(stabilities) >= step:
-                data[(step, target.split("/")[-1])] = stabilities[step-1]  # 修正: インデックスは0ベースなのでstep-1
+                data[(step, target.split("/")[-1])] = stabilities[step-1]  
 
     print(f"Data dictionary: {data}")
     
