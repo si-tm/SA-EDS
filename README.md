@@ -18,6 +18,7 @@ mv ../initial .
 ```
 and then, build this Dockerfile.
 <!-- ```
+=======
 cd oxDNA
 mkdir build && cd build
 cmake .. && make -j 20
@@ -31,7 +32,6 @@ chmod 777 build.sh
 ### Usage
 
 After all dependencies are installed (including NUPACK), you should be able to launch the Python scripts of this repository.
-
 target_name is `{initial, int_initial}`.
 
 1. make data from results of oxDNA. 
@@ -79,6 +79,7 @@ plot curv which is transition of connection stability.
 ```
 ./runDocker.sh scripts/comparison_curv_fit.py
 ```
+→ final.pの場所
 
 ## results
 ### compararison with regressor

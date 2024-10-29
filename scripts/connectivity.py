@@ -24,7 +24,6 @@ e = calcEigenvalues(G)
 def ind2eigen(type_of_l, indexes, structure, temperature, domains):
     dic = {}
     for i, string in enumerate(structure):
-        # print(string)
         dic[string] = indexes[i]
     G = getGraph_deltaG(dic, domains, temperature,type_of_l)
     e = calcEigenvalues(G)
@@ -36,14 +35,6 @@ def getGraph_deltaG(dic, seq, temp, type_of_l="L1"):
 
     # get domain
     if type_of_l == "L1" or type_of_l == "L2":
-        # a = Domain(seq['a'], name='Domain a')
-        # b = Domain(seq['b'], name='Domain b')
-        # domain_name = {
-        #     "a" : a,
-        #     "b" : b,
-        #     "a*" : ~a,
-        #     "b*" : ~b
-        # }
         a = Domain(str(seq['a']), name='Domain a', material='dna')
         b = Domain(str(seq['b']), name='Domain b', material='dna')
         domain_name = {
@@ -53,29 +44,6 @@ def getGraph_deltaG(dic, seq, temp, type_of_l="L1"):
             "b*" : ~b
         }
     elif type_of_l == "L3":
-#         # AAGAGCGACAATTTTTA
-#         a = seq['a']
-#         print(a)
-#         b = seq['b']
-#         c = seq['c']
-#         d = seq['d']
-#         e = seq['e']
-#         f = seq['f']
-# # Debug prints to check sequences
-#         print(f"a_seq: {a}")
-#         print(f"a_seq: {type(a)}")
-#         print(f"b_seq: {b}")
-#         print(f"c_seq: {c}")
-#         print(f"d_seq: {d}")
-#         print(f"e_seq: {e}")
-#         print(f"f_seq: {f}")
-
-        a = Domain(str(seq['a']), name='Domain a', material='dna')
-        b = Domain(str(seq['b']), name='Domain b', material='dna')
-        c = Domain(str(seq['c']), name='Domain c', material='dna')
-        d = Domain(str(seq['d']), name='Domain d', material='dna')
-        e = Domain(str(seq['e']), name='Domain e', material='dna')
-        f = Domain(str(seq['f']), name='Domain f', material='dna')
         domain_name = {
             "a" : a,
             "b" : b,

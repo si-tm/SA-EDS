@@ -332,8 +332,10 @@ def run_qdpy(dirpath="/home/user/SA-EDS/results"):
     algo = L2Evo(
         grid, 
         # budget=6000, 
-        budget=10000, 
-        batch_size=100,
+        # budget=10000, 
+        # batch_size=100,
+        budget=100, 
+        batch_size=10,
         optimisation_task="maximization")
     
     # Create a logger to pretty-print everything and generate output data files

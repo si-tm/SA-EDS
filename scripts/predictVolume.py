@@ -1,4 +1,10 @@
 import tensorflow as tf
+print("TensorFlow version:", tf.__version__)
+
+from tensorflow.keras.layers import Dense
+from tensorflow.keras import Model
+from tensorflow.keras import layers
+import sys
 import matplotlib.pyplot as plt
 import pickle
 from scipy.stats import linregress
@@ -48,13 +54,13 @@ def bagging_regressor(x_train, x_test, y_train, y_test):
 
     with open(f'/home/user/SA-EDS/saved_model/bagging_model_{type_of_l}_{target}.pkl', 'wb') as f:
         pickle.dump(er, f)
-
     test_predictions = er.predict(x_test)
     train_predictions = er.predict(x_train)
     res = linregress(y_test, test_predictions)
 
     if type_of_l == "L1" or type_of_l == "L2":
         max_value = 30
+        max_value = 20
     elif type_of_l == "L3":
         max_value = 150
 

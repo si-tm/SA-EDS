@@ -97,7 +97,6 @@ class L3Individual(Individual):
         return domains
     
     def init_structure(self):
-        # input/structure_seq/input_seq_L2.csv
         f = open("/home/user/SA-EDS/conf/input_seq_L3.csv", "r")
         lst = csv.reader(f)
         structure = []
