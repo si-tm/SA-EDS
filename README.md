@@ -47,11 +47,13 @@ then this generate `datasete/L{1-3}_data_initial.pkl`
 2. generate surrogate model which predicts the average of DNA volume.
 The figure of results will be saved as `results/plot_L{1-3}.png`, and the model will be saved in `saved_model`.
 ```
-./runDocker.sh scripts/predictVolume.py L1
-./runDocker.sh scripts/predictVolume.py L2
-./runDocker.sh scripts/predictVolume.py L3 initial
+./runDocker.sh scripts/predictVolume.py L1 {target_name}
+./runDocker.sh scripts/predictVolume.py L2 {target_name}
+./runDocker.sh scripts/predictVolume.py L3 {target_name}
 
-./runDocker.sh scripts/predict_curve.py L3 int_initial
+./runDocker.sh scripts/predict_curve.py L1 {target_name}
+./runDocker.sh scripts/predict_curve.py L2 {target_name}
+./runDocker.sh scripts/predict_curve.py L3 {target_name}
 ```
 
 3. based on the surrogate model, we can map the result of Quality Diversity.
@@ -61,6 +63,7 @@ results will be saved in `results`.
 ./runDocker.sh scripts/optimize_l2_original_ind_temp_eigen.py 
 ./runDocker.sh scripts/optimize_l3_original_ind_temp_eigen.py 
 
+./runDocker.sh scripts/qd_l1.py 
 ./runDocker.sh scripts/qd_l3.py 
 ```
 
@@ -69,6 +72,13 @@ results will be saved in `results`.
 ./runDocker.sh scripts/get_ind
 ```
 option!
+
+### other properties
+
+plot curv which is transition of connection stability.
+```
+./runDocker.sh scripts/comparison_curv_fit.py
+```
 
 ## results
 ### compararison with regressor

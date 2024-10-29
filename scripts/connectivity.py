@@ -36,8 +36,16 @@ def getGraph_deltaG(dic, seq, temp, type_of_l="L1"):
 
     # get domain
     if type_of_l == "L1" or type_of_l == "L2":
-        a = Domain(seq['a'], name='Domain a')
-        b = Domain(seq['b'], name='Domain b')
+        # a = Domain(seq['a'], name='Domain a')
+        # b = Domain(seq['b'], name='Domain b')
+        # domain_name = {
+        #     "a" : a,
+        #     "b" : b,
+        #     "a*" : ~a,
+        #     "b*" : ~b
+        # }
+        a = Domain(str(seq['a']), name='Domain a', material='dna')
+        b = Domain(str(seq['b']), name='Domain b', material='dna')
         domain_name = {
             "a" : a,
             "b" : b,
