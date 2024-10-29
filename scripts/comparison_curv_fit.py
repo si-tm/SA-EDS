@@ -3,6 +3,7 @@ import seaborn as sns
 import pandas as pd
 import glob
 import curv_fit as cf
+import sys
 
 def get_step(target, target_library):
     # 1から9までのstabilityのlistを返す
@@ -35,10 +36,13 @@ def plot(data, target_library, temp, color):
     plt.show()
 
 def main():
+    if len(sys.argv) != 3:
+        print("usage: python3 comparison_curv_fit.py <type of l> <target>")
     steps = list(range(1, 10))
-    target_library = "L1"
-    targets = glob.glob(f"/home/user/SA-EDS/int_initial/{target_library}_initial_*/{target_library}-*")
-    
+    target_library = sys.argv[1]
+    target = sys.argv[2]
+    targets = glob.glob(f"/home/user/SA-EDS/{target}/{target_library}_initial_*/{target_library}-*")
+    print(f"/home/user/SA-EDS/{target}/{target_library}_initial_*/{target_library}-*")
     print(f"Targets found: {targets}")
     
     # データを作成

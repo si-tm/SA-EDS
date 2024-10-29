@@ -54,6 +54,7 @@ class L1Individual(Individual):
     domains : {}
     nb_comb : int
     temp_lst : [int] = [277, 298, 308, 318, 328, 338, 348, 358]
+    # temp_lst : [int] = [277, 308, 328, 358]
     temp : int
     input : [int]
     # export_seq.py にて生成
