@@ -18,7 +18,6 @@ mv ../initial .
 ```
 and then, build this Dockerfile.
 <!-- ```
-=======
 cd oxDNA
 mkdir build && cd build
 cmake .. && make -j 20

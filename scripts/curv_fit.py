@@ -292,7 +292,6 @@ if __name__ == '__main__':
 
 
 
-
     # filename = "int_initial/L3_initial_0/L3-GA100000-0.50-ERT-0_277_2/trajectory_L3-GA100000-0.50-ERT-0_277_2.dat"
     # extra_path = "int_initial/L3_initial_0/L3-GA100000-0.50-ERT-0_277_2/"
     # filename = base_dir + filename
