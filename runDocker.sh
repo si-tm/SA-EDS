@@ -11,7 +11,7 @@
 currentdir=$(pwd)
 basename=`basename $currentdir`
 # docker run  --rm -it -v "${currentdir}:/home/user/${basename}" sa-eds /home/user/venv/bin/python3 /home/user/${basename}/${1}
-docker run  --rm -v "${currentdir}:/home/user/${basename}" sa-eds /home/user/venv/bin/python3 /home/user/${basename}/${1} "${2}" "${3}"
+docker run  --rm -v "${currentdir}:/home/user/${basename}" sa-eds /home/user/venv/bin/python3 /home/user/${basename}/${1} "${2}" "${3}" "${4}"
 # docker run  --rm -it -v "${currentdir}:/home/user/${basename}" sa-eds /bin/bash
 # docker run --rm -it -v "${currentdir}:/home/user/SA-EDS" -w /home/user/SA-EDS/oxDNA/build ubuntu:latest /bin/bash -c "cmake .. && make -j4"
 # docker run --rm -it -v "${currentdir}:/home/user/SA-EDS" -w /home/user/SA-EDS/oxDNA/ ubuntu:latest /bin/bash -c "apt-get update && apt-get install -y cmake make && mkdir build && cd build && echo pwd && cmake .. && make -j4"

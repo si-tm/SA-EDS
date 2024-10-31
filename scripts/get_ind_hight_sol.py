@@ -69,19 +69,21 @@ def readFinal(path, type_of_l, target, result_path):
         data = pickle.load(f)  
     # ``data`` is now a dictionary containing all results, including the final container, all solutions, the algorithm parameters, etc.
     grid = data['container']
+    ind_dic = {}
     for i, ind in enumerate(grid):
         # if ind.features[1] >= 2 and ind.features[1] <= 6: # ここ変える
         lst = ind.indexes
         comp = Ind2complexes(lst, type_of_l)
         comp = req(comp)
-        # print(f"fitness : {ind.fitness[0]} scaled energy : {ind.features[0]}, b/c : {ind.features[1]}, temp : {ind.temp}") # feature0 : よこ feature1 : たて
-        # print(f"strand set : {[str(strand) for strand, conc in ind.strands]}")
-        # print()
-        # make_req(type_of_l=type_of_l, filename=f"{ind.name}-{i}", lst=comp, target=target, result_path=result_path) # ここ変える
+        if not ind.name in ind_dic:
+            ind_dic[ind.name] = ind
+        elif ind_dic[ind.name].fitness[0] < ind.fitness[0]:
+            ind_dic[ind.name] = ind
+
+    for i, ind in enumerate(ind_dic):
         make_req(type_of_l=type_of_l, filename=f"{ind.name}", lst=comp, target=target, result_path=result_path) # ここ変える
-        print(i, ind.name)
-        # print(ind.fitness)
-        # print(ind.features)
+
+    make_req(type_of_l=type_of_l, filename=f"{ind.name}", lst=comp, target=target, result_path=result_path) # ここ変える
 
 def write_csv(path, type_of_l, target):
     with open(path, "rb") as f:
@@ -159,6 +161,7 @@ if __name__ == '__main__':
     if len(sys.argv) != 4:
         print("usage : python3 get_ind.py <target name> <type of l> <req_num>")
         print("usage : python3 get_ind.py int_initial L1 1")
+    print(sys.argv)
     type_of_l = sys.argv[1]
     target = sys.argv[2]
     req_num = sys.argv[3]

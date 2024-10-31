@@ -13,7 +13,7 @@ import common.get_target_file as gtf
 import datetime
 from classify_seq import make_input_seq as mis
 import get_x2
-import load_results as lr
+import archive.load_results as lr
 import time
 
 

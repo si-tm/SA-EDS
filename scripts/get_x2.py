@@ -8,7 +8,7 @@ from common import check_dir as cd
 from classify_seq import make_input_seq as mis
 from classify_seq import get_structure_from_pil as gsfp
 from classify_seq import get_structure_from_req as gsfq
-import load_results as lr
+import archive.load_results as lr
 import csv
 import pickle
 import glob

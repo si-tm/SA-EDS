@@ -282,7 +282,7 @@ def set_eval(ind, averageModel, scale=30.0 ):
     strands = ind.indexes
     score = 2*math.atan(averageModel.predict([ind.input])[0]/scale)/math.pi
     energy, nb_comp = nupack_val(ind)
-    fit0 = ind.temp
+    fit0 = ind.temp_lst.index(ind.temp)
     fit1 = energy
     fit2 = predict_sigmoid(ind.input)
     # print("fit1 : ", fit1)
@@ -290,7 +290,7 @@ def set_eval(ind, averageModel, scale=30.0 ):
     # print(features, score)
     return (score,), features
 
-def run_qdpy(dirpath="/home/user/SA-EDS/results"):
+def run_qdpy(dirpath="/home/user/SA-EDS/results/int_initial_L3"): # あとでかえる
     # Create container and algorithm. Here we use MAP-Elites, by illuminating a Grid container by evolution.
         
     grid = containers.Grid(
@@ -299,15 +299,16 @@ def run_qdpy(dirpath="/home/user/SA-EDS/results"):
         max_items_per_bin=1, 
         fitness_domain=((0.0, 1.),),  
         # features_domain=((0., 1.), (1, 1728))) #軸 deviation, number of strands 
-        features_domain=( (277., 358.), (0., 1.), (0., 1.))) #軸 free energy, sigmoid, temp
+        features_domain=( (0., 7.), (0., 1.), (0., 1.))) #軸 free energy, sigmoid, temp
         # features_domain=( (277., 358.), (0., 1.), (0., 1.))) #軸 free energy, sigmoid, temp
     
     algo = L3Evo(
         grid, 
         budget=100000, 
-        # budget=1000,
+        # budget=1000, 
         # budget=3000, 
         batch_size=100,
+        # batch_size=10,
         optimisation_task="maximization")
     
     # Create a logger to pretty-print everything and generate output data files

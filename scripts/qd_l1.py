@@ -291,7 +291,7 @@ def set_eval(ind, averageModel, scale=10.0 ):
     # print(features, score)
     return (score,), features
 
-def run_qdpy(dirpath="/home/user/SA-EDS/results"):
+def run_qdpy(dirpath="/home/user/SA-EDS/results/int_initial_L1"):
     # Create container and algorithm. Here we use MAP-Elites, by illuminating a Grid container by evolution.
         
     grid = containers.Grid(
