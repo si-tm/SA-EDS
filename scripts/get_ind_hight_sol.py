@@ -5,11 +5,11 @@ import os
 import glob
 import sys
 
-if sys.argv[1] == "L1":
+if sys.argv[2] == "L1":
     from qd_l1 import L1Individual
-if sys.argv[1] == "L2":
+if sys.argv[2] == "L2":
     from qd_l2 import L2Individual
-if sys.argv[1] == "L3":
+if sys.argv[2] == "L3":
     from qd_l3 import L3Individual
 
 # final.pからスコアの高いindを取り出す
@@ -80,7 +80,8 @@ def readFinal(path, type_of_l, target, result_path):
         elif ind_dic[ind.name].fitness[0] < ind.fitness[0]:
             ind_dic[ind.name] = ind
 
-    for i, ind in enumerate(ind_dic):
+    for i, ind_name in enumerate(ind_dic):
+        ind = ind_dic[ind_name]
         make_req(type_of_l=type_of_l, filename=f"{ind.name}", lst=comp, target=target, result_path=result_path) # ここ変える
 
     make_req(type_of_l=type_of_l, filename=f"{ind.name}", lst=comp, target=target, result_path=result_path) # ここ変える
@@ -161,9 +162,8 @@ if __name__ == '__main__':
     if len(sys.argv) != 4:
         print("usage : python3 get_ind.py <target name> <type of l> <req_num>")
         print("usage : python3 get_ind.py int_initial L1 1")
-    print(sys.argv)
-    type_of_l = sys.argv[1]
-    target = sys.argv[2]
+    target = sys.argv[1]
+    type_of_l = sys.argv[2]
     req_num = sys.argv[3]
     
     final_path = f"/home/user/SA-EDS/results/{target}_{type_of_l}/final.p"
