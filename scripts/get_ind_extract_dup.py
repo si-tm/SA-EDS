@@ -5,11 +5,11 @@ import os
 import glob
 import sys
 
-if sys.argv[1] == "L1":
+if sys.argv[2] == "L1":
     from qd_l1 import L1Individual
-if sys.argv[1] == "L2":
+if sys.argv[2] == "L2":
     from qd_l2 import L2Individual
-if sys.argv[1] == "L3":
+if sys.argv[2] == "L3":
     from qd_l3 import L3Individual
 
 # final.pからスコアの高いindを取り出す
@@ -69,19 +69,22 @@ def readFinal(path, type_of_l, target, result_path):
         data = pickle.load(f)  
     # ``data`` is now a dictionary containing all results, including the final container, all solutions, the algorithm parameters, etc.
     grid = data['container']
+    ind_dic = {}
     for i, ind in enumerate(grid):
         # if ind.features[1] >= 2 and ind.features[1] <= 6: # ここ変える
         lst = ind.indexes
         comp = Ind2complexes(lst, type_of_l)
         comp = req(comp)
-        # print(f"fitness : {ind.fitness[0]} scaled energy : {ind.features[0]}, b/c : {ind.features[1]}, temp : {ind.temp}") # feature0 : よこ feature1 : たて
-        # print(f"strand set : {[str(strand) for strand, conc in ind.strands]}")
-        # print()
-        # make_req(type_of_l=type_of_l, filename=f"{ind.name}-{i}", lst=comp, target=target, result_path=result_path) # ここ変える
+        if not ind.name in ind_dic:
+            ind_dic[ind.name] = ind
+        elif ind_dic[ind.name].fitness[0] < ind.fitness[0]:
+            ind_dic[ind.name] = ind
+
+    for i, ind_name in enumerate(ind_dic):
+        ind = ind_dic[ind_name]
         make_req(type_of_l=type_of_l, filename=f"{ind.name}", lst=comp, target=target, result_path=result_path) # ここ変える
-        print(i, ind.name)
-        # print(ind.fitness)
-        # print(ind.features)
+
+    make_req(type_of_l=type_of_l, filename=f"{ind.name}", lst=comp, target=target, result_path=result_path) # ここ変える
 
 def write_csv(path, type_of_l, target):
     with open(path, "rb") as f:
@@ -89,24 +92,25 @@ def write_csv(path, type_of_l, target):
         data = pickle.load(f)  
 
     grid = data['container']
-    with open(f"/home/user/SA-EDS/results/qd_output_{type_of_l}_{target}.csv", "w") as f:
-        f.write("fitness,temp_num,scaled_energy,b/c,temp,strand_set\n")  # ヘッダーを書く
+    target_name = target.split("/")[-2]
+    print(type_of_l, target)
+    print(f"/home/user/SA-EDS/results/qd_output_{target_name}.csv")
+    with open(f"/home/user/SA-EDS/results/qd_output_{target_name}.csv", "w") as f:
+        f.write("fitness,scaled_energy,b/c,temp,strand_set\n")  # ヘッダーを書く
         for i, ind in enumerate(grid):
             lst = ind.indexes
             comp = Ind2complexes(lst, type_of_l)
             # comp = req(comp)
             fitness = ind.fitness[0]
-            temp_num = ind.features[0]
-            scaled_energy = ind.features[1]
-            bc = ind.features[2]
-            print(ind.features)
+            scaled_energy = ind.features[0]
+            bc = ind.features[1]
             temp = ind.temp
             strand_set = ",".join([strand.name for strand, conc in ind.strands])
             
 
             comp = ",".join(comp)
             
-            f.write(f"{fitness},{temp_num},{scaled_energy},{bc},{temp},{comp} \n")
+            f.write(f"{fitness},{scaled_energy},{bc},{temp},{comp} \n")
  
 
                 # make_req(type_of_l=type_of_l, filename=ind.name, lst=comp, target=target)  # 必要に応じてコメントアウトを解除
@@ -161,11 +165,14 @@ if __name__ == '__main__':
     if len(sys.argv) != 4:
         print("usage : python3 get_ind.py <target name> <type of l> <req_num>")
         print("usage : python3 get_ind.py int_initial L1 1")
-    type_of_l = sys.argv[1]
-    target = sys.argv[2]
+    target = sys.argv[1]
+    type_of_l = sys.argv[2]
     req_num = sys.argv[3]
+
+    print(target, type_of_l, req_num)
     
     final_path = f"/home/user/SA-EDS/results/{target}_{type_of_l}/final.p"
     result_path = f"/home/user/SA-EDS/conf/req_{type_of_l}_{req_num}/"
+    print(final_path)
     print(result_path)
     main(final_path, type_of_l, result_path)

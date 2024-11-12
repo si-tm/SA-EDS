@@ -300,7 +300,7 @@ def run_qdpy(dirpath="/home/user/SA-EDS/results/int_initial_L1"):
         max_items_per_bin=1, 
         fitness_domain=((0.0, 1.),),  
         # features_domain=((0., 1.), (1, 1728))) #軸 deviation, number of strands 
-        features_domain=( (0., 7.), (0., 1.), (0., 1.))) #軸 free energy, sigmoid, temp
+        features_domain=( (0., 6.), (0., 1.), (0., 1.))) #軸 free energy, sigmoid, temp
         # features_domain=( (277., 358.), (0., 1.), (0., 1.))) #軸 free energy, sigmoid, temp
     
     algo = L1Evo(
