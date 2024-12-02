@@ -3,12 +3,12 @@ type_of_l = L3
 
 # structure
 number_of_types = 6
-s0 = a a b* @initial 1.0 M
-s1 = a a c* @initial 1.0 M
-s2 = b c* d @initial 1.0 M
-s3 = e b* d @initial 1.0 M
-s4 = e* b d @initial 1.0 M
-s5 = f* b* b* @initial 1.0 M
+s0 = a a a* @initial 1.0 M
+s1 = a a b* @initial 1.0 M
+s2 = c b* e* @initial 1.0 M
+s3 = c* d* d* @initial 1.0 M
+s4 = d* c f @initial 1.0 M
+s5 = f e d* @initial 1.0 M
 # length
 length a = 17
 length b = 17

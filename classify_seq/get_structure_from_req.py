@@ -20,10 +20,14 @@ class req():
                 # "="と"@initial"の間を出力
                 lst = l.split(" ")
                 # structure = lst[lst.index("=") + 1: lst.index("@")]
-                if "@ initial" in lst:
+                if "@initial" in lst:
+                    structure = lst[lst.index("=") + 1: lst.index("@initial")]
+                    print(structure)
+                elif "@ initial" in lst:
                     structure = lst[lst.index("=") + 1: lst.index("@ initial")]
                     print(structure)
                 elif "@" in lst:
+                    print("wow")
                     structure = lst[lst.index("=") + 1: lst.index("@")]
                 else:
                     structure = lst[lst.index("=") + 1: lst.index("@initial")]

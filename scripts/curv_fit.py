@@ -80,7 +80,9 @@ def count_domain(target_dir):
     f = open(req_dir, 'r')
     nb_domain = 0
     for l in f:
-        if l[0] == 's':
+        if l[0] == 's' and "@initial" in l:
+            nb_domain = nb_domain + (l.split(" ").index("@initial") - l.split(" ").index("=") - 1)*5
+        elif l[0] == 's':
             nb_domain = nb_domain + (l.split(" ").index("@") - l.split(" ").index("=") - 1)*5
 
     return nb_domain
@@ -114,7 +116,6 @@ def stability(path, type_of_l):
 
 
 def fit_sigmoid(path, type_of_l):
-
     strands2particle, particle2strand = gtd.make_initial_strands_data(path)
     id_pair_dic = HB_connectivity(path, type_of_l)
 
@@ -123,7 +124,6 @@ def fit_sigmoid(path, type_of_l):
     int_step_nb = 100000
 
     nb_domain = count_domain(path)
-
 
     for i in range(9):
         # 解離: Dissociation
@@ -208,6 +208,7 @@ def func(x, a, b, c):
     return a /(np.exp(-b * x) + c)
 
 def calc_curv_fit(filename, extra_path, type_of_l):
+
     file_dic = gtf.file_dic(extra_path)
     if "trajectory1" not in file_dic.keys():
         breakdown_trajectory_file(filename, path=extra_path)
@@ -251,7 +252,8 @@ if __name__ == '__main__':
     f = open(file_path, "rb")
     data = pickle.load(f)
 
-    temp_lst = ["277", "298", "308", "318", "328", "338", "348", "358"]
+    # temp_lst = ["277", "298", "308", "318", "328", "338", "348", "358"]
+    temp_lst = ["277", "308", "328", "358"]
 
     for dir10 in dirs:
         dir = glob.glob(dir10 + "/*")
@@ -262,7 +264,9 @@ if __name__ == '__main__':
             temp_dic[temp] = {"a" : 0, "b" : 0, "c" : 0, "nb" : 0}
 
         for dir1 in dir:
+            print("dir1", dir1)
             try:
+
                 filename = gtf.get_traj(dir1)
                 extra_path = dir1 + "/"
                 tmp_temp = extra_path.split("_")[-2]

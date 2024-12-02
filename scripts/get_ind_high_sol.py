@@ -79,12 +79,16 @@ def readFinal(path, type_of_l, target, result_path):
             ind_dic[ind.name] = ind
         elif ind_dic[ind.name].fitness[0] < ind.fitness[0]:
             ind_dic[ind.name] = ind
+    # print(ind_dic)
 
     for i, ind_name in enumerate(ind_dic):
         ind = ind_dic[ind_name]
+        lst = ind.indexes
+        comp = Ind2complexes(lst, type_of_l)
+        comp = req(comp)
         make_req(type_of_l=type_of_l, filename=f"{ind.name}", lst=comp, target=target, result_path=result_path) # ここ変える
-
-    make_req(type_of_l=type_of_l, filename=f"{ind.name}", lst=comp, target=target, result_path=result_path) # ここ変える
+        print(result_path)
+    # make_req(type_of_l=type_of_l, filename=f"{ind.name}", lst=comp, target=target, result_path=result_path) # ここ変える
 
 def write_csv(path, type_of_l, target):
     with open(path, "rb") as f:

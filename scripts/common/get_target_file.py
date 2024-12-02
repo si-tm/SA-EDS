@@ -124,6 +124,7 @@ def get_new_input(dir_path):
 
 def get_traj(dir_path):
     d = file_dic(dir_path)
+    print("traj", d["trajectory"])
     return d["trajectory"]
 
 def get_top(dir_path):

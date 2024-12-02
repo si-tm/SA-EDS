@@ -63,6 +63,7 @@ results will be saved in `results`.
 ./runDocker.sh scripts/optimize_l3_original_ind_temp_eigen.py 
 
 ./runDocker.sh scripts/qd_l1.py 
+./runDocker.sh scripts/qd_l2.py 
 ./runDocker.sh scripts/qd_l3.py 
 ```
 

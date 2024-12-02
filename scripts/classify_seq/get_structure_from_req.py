@@ -23,10 +23,11 @@ class req():
                 if "@ initial" in lst:
                     structure = lst[lst.index("=") + 1: lst.index("@ initial")]
                     print(structure)
-                elif "@" in lst:
-                    structure = lst[lst.index("=") + 1: lst.index("@")]
-                else:
+                elif "@initial" in lst:
                     structure = lst[lst.index("=") + 1: lst.index("@initial")]
+                else:
+                    print("wow")
+                    structure = lst[lst.index("=") + 1: lst.index("@")]
                 structures.append(structure)
         return structures
     

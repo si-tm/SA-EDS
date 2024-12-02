@@ -18,17 +18,20 @@ sys.path.append("../common")
 from classify_seq import make_input_seq as mis
 
 type_of_l = sys.argv[1]
-target = sys.argv[2]
 
-def get_data():
-    f1 = open(f"home/user/SA-EDS/dataset/x_{target}_{type_of_l}.pkl", "rb")
-    f2 = open(f"home/user/SA-EDS/dataset/{type_of_l}_data_{target}.pkl", "rb")
-    domain_seq_dic = pickle.load(f1)
-    value_dic = pickle.load(f2)
+def get_data(target_lst):
     domain_lst = mis.seq_lst(f"home/user/SA-EDS/conf/input_seq_{type_of_l}.csv")
+    domain_seq_dic = {}
+    value_dic = {}
 
-    f1.close()
-    f2.close()
+    for target in target_lst:
+        f1 = open(f"home/user/SA-EDS/dataset/x_{target}_{type_of_l}.pkl", "rb")
+        f2 = open(f"home/user/SA-EDS/dataset/{type_of_l}_data_{target}.pkl", "rb")
+        domain_seq_dic.update(pickle.load(f1))
+        value_dic.update(pickle.load(f2))
+
+        f1.close()
+        f2.close()
 
     x_data = []
     y_data = []
@@ -45,10 +48,10 @@ def get_data():
     x_data = np.array(x_data)
     y_data = np.array(y_data)
 
-    x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size=0.2)
+    x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size=0.1)
     return x_train, x_test, y_train, y_test
 
-def bagging_regressor(x_train, x_test, y_train, y_test):
+def bagging_regressor(x_train, x_test, y_train, y_test, target):
     er = BaggingRegressor(estimator=RandomForestRegressor(n_estimators=10), n_estimators=10)
     er.fit(x_train, y_train)
 
@@ -59,8 +62,8 @@ def bagging_regressor(x_train, x_test, y_train, y_test):
     res = linregress(y_test, test_predictions)
 
     if type_of_l == "L1" or type_of_l == "L2":
-        max_value = 30
         max_value = 20
+        max_value = 40
     elif type_of_l == "L3":
         max_value = 150
 
@@ -82,7 +85,18 @@ def bagging_regressor(x_train, x_test, y_train, y_test):
     print(f"Plot saved as plot_{type_of_l}_{target}.png, R²: {r_squared:.2f}")
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("usage : python3 predictVolume.py {L1, L2, L3} target")
-    x_train, x_test, y_train, y_test = get_data()
-    bagging_regressor(x_train, x_test, y_train, y_test)
+    if len(sys.argv) < 3:
+        print("usage : python3 predictVolume.py {L1, L2, L3} target1 target2 ...")
+    
+    target_lst = []
+
+    print(sys.argv)
+    
+    for i, argv in enumerate(sys.argv):
+        if i > 1:
+            target_lst.append(argv)
+    target_lst = list(filter(bool, target_lst))
+    print(target_lst)
+
+    x_train, x_test, y_train, y_test = get_data(target_lst)
+    bagging_regressor(x_train, x_test, y_train, y_test, ("-").join(target_lst))

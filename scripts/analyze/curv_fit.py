@@ -80,7 +80,10 @@ def count_domain(target_dir):
     f = open(req_dir, 'r')
     nb_domain = 0
     for l in f:
-        if l[0] == 's':
+        if l[0] == 's' and "@initial" in l:
+            nb_domain = nb_domain + (l.split(" ").index("@initial") - l.split(" ").index("=") - 1)*5
+        elif l[0] == 's':
+            print("wow")
             nb_domain = nb_domain + (l.split(" ").index("@") - l.split(" ").index("=") - 1)*5
 
     return nb_domain
