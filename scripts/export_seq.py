@@ -18,17 +18,14 @@ def get_req_lst(type_of_l, target):
         d_lst = glob.glob(f"{dir}/*")
         for d in d_lst:
             req = gtf.get_req(d)
-            print(req)
             req_lst.append(req)
             break
-    print(req_lst)
     return req_lst
 
 def get_target_lst(type_of_l, target):
     target_lst = []
     dir_lst = glob.glob(f"/home/user/SA-EDS/{target}/{type_of_l}_*")
     for dir in dir_lst:
-        print(dir)
         d_lst = glob.glob(f"{dir}/*")
         for d in d_lst:
             target_lst.append(d)
@@ -46,20 +43,35 @@ def get_seq(target_lst, type_of_l):
         'f': []
     }
     for target in target_lst:
-        print(target)
         # {'a': 'CCCTT', 'b': 'GAGTC'}
         tmp_dic = gr.req(target).get_domain_seq(target)
         for key in tmp_dic:
-            print(key, tmp_dic[key])
+            # print(key, tmp_dic[key])
+            seq_dic[key].append(tmp_dic[key])
+    print(seq_dic)
 
 
 def get_indexes(target_lst,type_of_l):
-    f = open("conf/input_seq_{type_of_l}.csv")
+
+    domain_dic = {}
+    f = open(f"/home/user/SA-EDS/conf/input_seq_{type_of_l}.csv")
+    csv_f = csv.reader(f)
+    for i, seq in enumerate(csv_f):
+        seq_str = "".join(seq)
+        domain_dic[seq_str] = i
+
     first_indexes = []
+
     for target in target_lst:
         # [['a', 'a', 'a', 'a*'], ['a', 'a', 'a', 'b'], ['a', 'a', 'a*', 'a'], ['a', 'a', 'b', 'b*'], ['b', 'b*', 'b*', 'a'], ['b*', 'b', 'a', 'a']]
         d_lst = gr.req(target).get_structure_seq(target)
-        
+        tmp_d_lst = []
+        for d in d_lst:
+            d_str = "".join(d)
+            tmp_d_lst.append(domain_dic[d_str])
+        first_indexes.append(tmp_d_lst)  
+
+    print(first_indexes)      
 
 if __name__ == '__main__':
     arg_lst = [item for item in sys.argv if item]

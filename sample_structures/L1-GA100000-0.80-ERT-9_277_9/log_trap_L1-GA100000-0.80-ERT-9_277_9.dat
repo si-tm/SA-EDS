@@ -1,0 +1,24 @@
+INFO: seeding the RNG with 42
+INFO: Initializing backend 
+INFO: Simulation type: VMMC
+INFO: The generator will try to take into account bonded interactions by choosing distances between bonded neighbours no larger than 2.000000
+INFO: Converting temperature from Kelvin (277.000000 K) to simulation units (0.092333)
+INFO: Temperature change detected (new temperature: 3.85 C, 277.00 K), re-initialising the DNA interaction
+WARNING: Overwriting key `name' (`hb_conf/L1-GA100000-0.80-ERT-9_277_9/energy_trap_L1-GA100000-0.80-ERT-9_277_9.dat' to `conf/L1-GA100000-0.80-ERT-9_277_9/hb_energy_trap_L1-GA100000-0.80-ERT-9_277_9.dat')
+INFO: pid: 1032
+INFO: (Cells.cpp) N_cells_side: 11, 11, 11; rcut=1.58377, IS_MC: 1
+INFO: N: 600, N molecules: 30
+WARNING: maxclust < 0, setting it to N = 600
+INFO: Not attempting to preserve topology; max_move_size = 11.6325
+INFO: RELEASE: 
+INFO: GIT COMMIT: c518215
+INFO: COMPILED ON: 10/06/24
+INFO: diffusion fixed.. -694.228 -694.228
+INFO: diffusion fixed.. -710.56 -710.56
+INFO: diffusion fixed.. -714.994 -714.994
+INFO: Aggregated I/O statistics (set debug=1 for file-wise information)
+	618.441 KB written to files
+	  0.000  B written to stdout/stderr
+	For a total of 0.000108 MB/s
+
+ERROR: (VMMC_CPUBackend) Accumulated Energy (-5079.86) and Energy computed from scratch (-720.887) don't match. Possibly percolating clusters. Your box is too small

@@ -1,0 +1,56 @@
+####  PROGRAM PARAMETERS  ####
+##############################
+sim_type = VMMC
+backend = CPU
+#debug = 1
+seed = 42
+
+##############################
+####    SIM PARAMETERS    ####
+##############################
+# steps = 10
+steps = 1000000
+newtonian_steps = 103
+diff_coeff = 2.50
+thermostat = john
+
+list_type = cells
+ensemble = nvt
+delta_translation = 0.22
+delta_rotation = 0.22
+
+#T = 334 K
+T = 277 K
+dt = 0.003
+verlet_skin = 0.5
+
+##############################
+####    INPUT / OUTPUT    ####
+##############################
+topology = home/user/SA-EDS/int_initial/L3_initial_1/L3-GA100000-0.50-ERT-1_277_10/generated_L3-GA100000-0.50-ERT-1_277_10.top
+conf_file = home/user/SA-EDS/int_initial/L3_initial_1/L3-GA100000-0.50-ERT-1_277_10/generated_L3-GA100000-0.50-ERT-1_277_10.dat
+lastconf_file = home/user/SA-EDS/int_initial/L3_initial_1/L3-GA100000-0.50-ERT-1_277_10/last_conf_L3-GA100000-0.50-ERT-1_277_10.dat.dat
+trajectory_file = home/user/SA-EDS/int_initial/L3_initial_1/L3-GA100000-0.50-ERT-1_277_10/trajectory_L3-GA100000-0.50-ERT-1_277_10.dat
+refresh_vel = 1
+log_file = home/user/SA-EDS/int_initial/L3_initial_1/L3-GA100000-0.50-ERT-1_277_10/log_L3-GA100000-0.50-ERT-1_277_10.dat
+no_stdout_energy = 1
+restart_step_counter = 1
+energy_file = home/user/SA-EDS/int_initial/L3_initial_1/L3-GA100000-0.50-ERT-1_277_10/energy_L3-GA100000-0.50-ERT-1_277_10.dat
+#print_conf_interval = 100000000
+# print_conf_interval = 100000
+# print_energy_every = 100000
+print_conf_interval = 100000
+print_energy_every = 100000
+time_scale = linear
+external_forces = 0
+
+data_output_1 = {
+	print_every = 10000
+	name = home/user/SA-EDS/int_initial/L3_initial_1/L3-GA100000-0.50-ERT-1_277_10/hb_L3-GA100000-0.50-ERT-1_277_10.dat
+	col_1 = {
+		type = step
+	}
+	col_2 = {
+		type = hb_energy
+	}
+}

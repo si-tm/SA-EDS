@@ -41,7 +41,8 @@ use b/c as y_axis
 """ 
 
 type_of_l = "L2"
-target = "int_initial"
+# target = "int_initial"
+target = "int_initial-int_second"
 
 class L2Individual(Individual):
     strands: Iterable[tuple[Strand,float]]
@@ -57,9 +58,12 @@ class L2Individual(Individual):
     temp : int
     input : [int]
     # export_seq.py にて生成
-    seq_dic = {'a': ['AGAAT', 'AGAAT', 'AGGGG', 'CTCTC', 'ATCGC', 'CGTGT', 'GAAGC', 'CACCG', 'TATGA', 'CATCG', 'GTGAC', 'CTACC', 'AACCG', 'CGGAA', 'TCAGA', 'CGACC', 'CAACG', 'CATCT', 'GAAGT', 'ACCGT'], 'b': ['TAACC', 'TAACC', 'ATGAA', 'AAACT', 'GTCCG', 'CCTAA', 'GTGGT', 'TTTGC', 'GTTCC', 'CTACC', 'AGATT', 'AGTTT', 'CTTTT', 'TCCGA', 'CGGGG', 'CAAGC', 'GCTTG', 'TTGGT', 'GGGGG', 'CCCTT'], 'c': [], 'd': [], 'e': [], 'f': []}
+    seq_dic = {'a': ['AGAAT', 'AGAAT', 'AGGGG', 'CTCTC', 'ATCGC', 'CGTGT', 'GAAGC', 'CACCG', 'TATGA', 'CATCG', 'GTGAC', 'CTACC', 'AACCG', 'CGGAA', 'TCAGA', 'CGACC', 'CAACG', 'CATCT', 'GAAGT', 'ACCGT'], 'b': ['TAACC', 'TAACC', 'ATGAA', 'AAACT', 'GTCCG', 'CCTAA', 'GTGGT', 'TTTGC', 'GTTCC', 'CTACC', 'AGATT', 'AGTTT', 'CTTTT', 'TCCGA', 'CGGGG', 'CAAGC', 'GCTTG', 'TTGGT', 'GGGGG', 'CCCTT'], 'c': [], 'd': [], 'e': [], 'f': []} # int_initial
+
     domains : {}
-    first_indexes = [[2, 1, 4, 6, 7], [2, 1, 4, 6, 7], [2, 1, 11, 6, 7, 14], [8, 11, 4, 12, 13], [8, 11, 4, 12, 14, 13], [8, 12, 13], [8, 12, 14, 13], [1, 8, 9, 11, 14, 13], [2, 6, 7], [2, 1, 6, 7], [2, 1, 11, 4, 6, 7], [2, 1, 4, 6, 7], [2, 1, 11, 6, 7, 14], [8, 11, 4, 12, 13], [8, 11, 4, 12, 14, 13], [8, 12, 13], [8, 12, 14, 13], [1, 8, 9, 11, 14, 13], [2, 6, 7], [2, 1, 6, 7]]
+    # first_indexes = [[2, 1, 4, 6, 7], [2, 1, 4, 6, 7], [2, 1, 11, 6, 7, 14], [8, 11, 4, 12, 13], [8, 11, 4, 12, 14, 13], [8, 12, 13], [8, 12, 14, 13], [1, 8, 9, 11, 14, 13], [2, 6, 7], [2, 1, 6, 7], [2, 1, 11, 4, 6, 7], [2, 1, 4, 6, 7], [2, 1, 11, 6, 7, 14], [8, 11, 4, 12, 13], [8, 11, 4, 12, 14, 13], [8, 12, 13], [8, 12, 14, 13], [1, 8, 9, 11, 14, 13], [2, 6, 7], [2, 1, 6, 7]]　# int_initial
+    # first_indexes = [[1, 2, 4, 11, 188, 224], [1, 2, 4, 11, 188, 224], [1, 2, 4, 11, 188, 224], [1, 2, 4, 11, 188, 224], [1, 2, 4, 11, 188, 224], [1, 2, 4, 11, 188, 224], [1, 2, 4, 11, 188, 224], [1, 2, 4, 11, 188, 224], [1, 2, 4, 11, 188, 224], [1, 2, 4, 11, 188, 224], [1, 2, 4, 11, 188, 224], [1, 2, 4, 11, 188, 224], [1, 2, 4, 11, 188, 224], [1, 2, 4, 11, 188, 224], [1, 2, 4, 11, 188, 224], [1, 2, 4, 11, 188, 224], [1, 2, 4, 11, 188, 224], [1, 2, 4, 11, 188, 224], [1, 2, 4, 11, 188, 224], [1, 2, 4, 11, 188, 224], [1, 2, 4, 11, 188, 224], [1, 2, 4, 11, 188, 224]] # int_second
+    first_indexes = [[1, 4, 42, 91, 129, 133], [4, 88, 91, 174, 241, 255], [112, 121, 133, 137, 170, 190], [1, 4, 148, 200, 203], [1, 2, 24, 102, 210, 228], [2, 11, 78, 102, 153, 225], [11, 23, 52, 64, 70, 185], [4, 14, 67, 134, 183, 234], [11, 60, 69, 71, 124, 225], [11, 135, 156, 221], [4, 41, 77, 100], [1, 4, 47, 98, 226], [1, 4, 102, 154, 170], [11, 146, 180, 192], [11, 33, 58, 84], [4, 42, 70, 171], [22, 94, 124, 135, 173], [4, 127, 219, 228], [2, 7, 44, 133, 158, 241]]
     eigenvalue_2 : float
 
     def __init__(self, specs:dict[str,Any]={}, indexes: [bool] = [], a_string = "GTTACTTGGA", b_string = "GGTTTTTTGC", nb_comb = 256, **kwargs : Any) -> None:
@@ -135,7 +139,7 @@ class L2Individual(Individual):
             if index == 1:
                 tmp_domain = Domain("", name="s"+str(tmp_index))
                 tmp_strand = Strand(str(tmp_domain), name="Strand tmp")
-                print("test", self.structure[num])
+                # print("test", self.structure[num])
                 for domain in self.structure[num].split(" "):
                     tmp_strand = Strand(self.domainlist_to_string(tmp_domain+self.domains[domain]), name=domain)
                     # if domain == "a":
@@ -255,7 +259,8 @@ class L2Evo(Evolution):
     def _internal_ask(self, base_ind):
         return super()._internal_ask(base_ind)    
 
-def nupack_val(ind, nupackmodel = nupackModel(material='dna'), fitness_scale = (1e-8), complexes_scale=200):
+def nupack_val(ind, nupackmodel = nupackModel(material='dna'), fitness_scale = (6e-9), complexes_scale=200):
+# def nupack_val(ind, nupackmodel = nupackModel(material='dna'), fitness_scale = (1e-8), complexes_scale=200):
     nupackmodel = nupackModel(material='dna', kelvin=ind.temp)
     tube_results = nupack.tube_analysis(tubes=[ind.tube], model=nupackmodel)
     score = 0
@@ -273,7 +278,7 @@ def import_sigmoid_model():
         regr_loaded = pickle.load(f)
     return regr_loaded
 
-def predict_sigmoid(input, min_val=-3, max_val=5):
+def predict_sigmoid(input, min_val=5, max_val=15):
     regr = import_sigmoid_model()
     input_reshaped = np.array(input).reshape(1, -1)
     sigmoid = regr.predict(input_reshaped)[0]
@@ -288,15 +293,15 @@ def set_eval(ind, averageModel, scale=10.0 ):
     fit2 = predict_sigmoid(ind.input)
     # print("fit1 : ", fit1)
     features = (fit0, fit1, fit2)
-    # print(features, score)
+    print(features, score)
     return (score,), features
 
-def run_qdpy(dirpath="/home/user/SA-EDS/results/int_initial_L2"):
+def run_qdpy(dirpath="/home/user/SA-EDS/results/int_second_L2"):
     # Create container and algorithm. Here we use MAP-Elites, by illuminating a Grid container by evolution.
         
     grid = containers.Grid(
         # shape=(16,16,8), 
-        shape=(9, 16,16), 
+        shape=(8, 16,16), 
         max_items_per_bin=1, 
         fitness_domain=((0.0, 1.),),  
         # features_domain=((0., 1.), (1, 1728))) #軸 deviation, number of strands 
@@ -306,15 +311,17 @@ def run_qdpy(dirpath="/home/user/SA-EDS/results/int_initial_L2"):
     algo = L2Evo(
         grid, 
         budget=100000, 
+        # budget=100, 
         # budget=1000,
         # budget=3000, 
         batch_size=100,
+        # batch_size=10,
         optimisation_task="maximization")
     
     # Create a logger to pretty-print everything and generate output data files
     logger = algorithms.AlgorithmLogger(algo)
 
-    with open('/home/user/SA-EDS/saved_model/bagging_model_L2_int_initial.pkl', 'rb') as f:
+    with open(f'/home/user/SA-EDS/saved_model/bagging_model_L2_{target}.pkl', 'rb') as f:
         
     # with open(f'/home/user/SA-EDS/saved_model/bagging_model_L2_initial_sigmo.pkl', 'rb') as f:
         regr_loaded = pickle.load(f)

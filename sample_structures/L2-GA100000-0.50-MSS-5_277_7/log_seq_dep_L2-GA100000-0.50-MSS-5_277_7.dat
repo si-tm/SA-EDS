@@ -1,0 +1,50 @@
+INFO: seeding the RNG with 42
+INFO: Initializing backend 
+INFO: Simulation type: VMMC
+INFO: The generator will try to take into account bonded interactions by choosing distances between bonded neighbours no larger than 2.000000
+INFO: Using 'oxDNA1_sequence_dependent_parameters.txt' as the input for sequence-dependent values
+INFO: Converting temperature from Kelvin (277.000000 K) to simulation units (0.092333)
+INFO: Temperature change detected (new temperature: 3.85 C, 277.00 K), re-initialising the DNA interaction
+WARNING: Overwriting key `name' (`hb_conf/L2-GA100000-0.50-MSS-5_277_7/energy_seq_dep_L2-GA100000-0.50-MSS-5_277_7.dat' to `conf/L2-GA100000-0.50-MSS-5_277_7/hb_energy_seq_dep_L2-GA100000-0.50-MSS-5_277_7.dat')
+INFO: pid: 803
+INFO: (Cells.cpp) N_cells_side: 10, 10, 10; rcut=1.58377, IS_MC: 1
+INFO: N: 400, N molecules: 20
+WARNING: maxclust < 0, setting it to N = 400
+INFO: Not attempting to preserve topology; max_move_size = 11.6325
+INFO: RELEASE: 
+INFO: GIT COMMIT: c518215
+INFO: COMPILED ON: 10/06/24
+INFO: diffusion fixed.. -438.527 -438.527
+INFO: diffusion fixed.. -465.708 -465.708
+INFO: diffusion fixed.. -472.137 -472.137
+INFO: diffusion fixed.. -465.061 -465.061
+INFO: diffusion fixed.. -469.051 -469.051
+INFO: diffusion fixed.. -478.507 -478.507
+INFO: diffusion fixed.. -467.99 -467.99
+INFO: diffusion fixed.. -469.76 -469.76
+INFO: diffusion fixed.. -482.453 -482.453
+INFO: diffusion fixed.. -483.331 -483.331
+
+INFO: Total Running Time: 7773.86 s, per step: 7.77386 ms
+INFO: Timings, in seconds, by Timer (total, own, spent in children)
+> SimBackend                       7773.856 (100.0%)        0.780 (  0.0%)     7773.076 (100.0%)
+***> Rotations+Translations        7773.076 (100.0%)     7773.076 (100.0%)        0.000 (  0.0%)
+> Lists                               0.000 (  0.0%)        0.000 (  0.0%)        0.000 (  0.0%)
+
+INFO: END OF THE SIMULATION, everything went OK!
+INFO: Aggregated I/O statistics (set debug=1 for file-wise information)
+	  1.402 MB written to files
+	  0.000  B written to stdout/stderr
+	For a total of  0.00018 MB/s
+
+
+Please cite these publications for any work that uses the oxDNA simulation package
+- for the code:
+    * P. Šulc et al., J. Chem. Phys. 137, 135101 (2012)
+    * L. Rovigatti et al., J. Comput. Chem. 36, 1 (2015)
+- for the oxDNA model:
+    * T. E. Ouldridge et al., J. Chem. Phys, 134, 085101 (2011)
+- for the oxDNA2 model:
+    * B. E. K. Snodin et al., J. Chem. Phys. 142, 234901 (2015)
+- for the oxRNA model:
+    * P. Šulc et al., J. Chem. Phys. 140, 235102 (2014)

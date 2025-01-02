@@ -100,7 +100,10 @@ def write_csv(path, type_of_l, target):
     print(type_of_l, target)
     print(f"/home/user/SA-EDS/results/qd_output_{target_name}.csv")
     with open(f"/home/user/SA-EDS/results/qd_output_{target_name}.csv", "w") as f:
-        f.write("ind_name, fitness,scaled_energy,b/c,temp,strand_set\n")  # ヘッダーを書く
+        if type_of_l == "L1" or type_of_l == "L2":
+            f.write("ind_name, fitness,scaled_energy,b/c,temp,seq_a,seq_b,strand_set,\n")  # ヘッダーを書く
+        else:
+            f.write("ind_name, fitness,scaled_energy,b/c,temp,strand_set,\n")  # ヘッダーを書く
         for i, ind in enumerate(grid):
             lst = ind.indexes
             comp = Ind2complexes(lst, type_of_l)
@@ -110,11 +113,14 @@ def write_csv(path, type_of_l, target):
             bc = ind.features[2]
             temp = ind.temp
             strand_set = ",".join([strand.name for strand, conc in ind.strands])
+            print(ind.domains['a'])
+            print(ind.domains['b'])
             
-
             comp = ",".join(comp)
-            
-            f.write(f"{ind.name},{fitness},{scaled_energy},{bc},{temp},{comp} \n")
+            if type_of_l == "L1" or type_of_l == "L2":
+                f.write(f"{ind.name},{fitness},{scaled_energy},{bc},{temp},{ind.domains['a']},{ind.domains['b']},{comp} \n")
+            else:
+                f.write(f"{ind.name},{fitness},{scaled_energy},{bc},{temp},{comp} \n")
  
 
                 # make_req(type_of_l=type_of_l, filename=ind.name, lst=comp, target=target)  # 必要に応じてコメントアウトを解除

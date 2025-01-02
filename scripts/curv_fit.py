@@ -115,48 +115,136 @@ def stability(path, type_of_l):
     return y
 
 
+# def fit_sigmoid(path, type_of_l):
+#     strands2particle, particle2strand = gtd.make_initial_strands_data(path)
+#     id_pair_dic = HB_connectivity(path, type_of_l)
+
+#     # trans_dic[step] = {"disociation" : 4, "binding" : 3, "stability" : 2}
+#     trans_dic = {}
+#     int_step_nb = 100000
+
+#     nb_domain = count_domain(path)
+
+#     for i in range(9):
+#         # 解離: Dissociation
+#         # 結合: Binding
+#         # 安定: Stability
+#         # domainの数で割る
+#         step_nb = (i + 1)*int_step_nb
+#         trans_dic[step_nb] = {}
+#         trans_dic[step_nb]["Dissociation"] = len(id_pair_dic[i] - id_pair_dic[i + 1]) / nb_domain
+#         trans_dic[step_nb]["Binding"] = len(id_pair_dic[i + 1] - id_pair_dic[i]) / nb_domain
+#         trans_dic[step_nb]["Stability"] = len(id_pair_dic[i] & id_pair_dic[i + 1]) / nb_domain
+
+#     xdata = np.linspace(int_step_nb, 9*int_step_nb, 9)
+#     int_xdata = [int(x) for x in xdata]
+#     # print(int_xdata, trans_dic.keys())
+#     y = [trans_dic[i]["Stability"] for i in int_xdata]
+#     xdata = np.float64([float(x/int_step_nb) for x in xdata])
+#     try :
+#         popt, pcov = curve_fit(func, xdata, y, maxfev = 100)
+#     except RuntimeError:
+#         popt = [0, 0, 1]
+#     plt.figure()
+#     plt.plot(xdata, y, 'b-', label='Stably Bonded Base Pair Count / Domain Count')
+#     plt.plot(xdata, func(xdata, *popt), 'r-', label='Sigmoid Curve Approximation')
+#     # Add labels and a legend
+#     plt.xlabel('Steps (scaled)')
+#     plt.ylabel('Stability')
+#     plt.legend()
+#     plt.savefig(f"{path}curv_fit.png")  # グラフを保存
+#     plt.show()
+#     plt.close()
+
+#     return popt
+
+
 def fit_sigmoid(path, type_of_l):
     strands2particle, particle2strand = gtd.make_initial_strands_data(path)
     id_pair_dic = HB_connectivity(path, type_of_l)
 
-    # trans_dic[step] = {"disociation" : 4, "binding" : 3, "stability" : 2}
     trans_dic = {}
     int_step_nb = 100000
-
     nb_domain = count_domain(path)
 
     for i in range(9):
-        # 解離: Dissociation
-        # 結合: Binding
-        # 安定: Stability
-        # domainの数で割る
-        step_nb = (i + 1)*int_step_nb
+        step_nb = (i + 1) * int_step_nb
         trans_dic[step_nb] = {}
         trans_dic[step_nb]["Dissociation"] = len(id_pair_dic[i] - id_pair_dic[i + 1]) / nb_domain
         trans_dic[step_nb]["Binding"] = len(id_pair_dic[i + 1] - id_pair_dic[i]) / nb_domain
         trans_dic[step_nb]["Stability"] = len(id_pair_dic[i] & id_pair_dic[i + 1]) / nb_domain
 
-    xdata = np.linspace(int_step_nb, 9*int_step_nb, 9)
+    xdata = np.linspace(int_step_nb, 9 * int_step_nb, 9)
     int_xdata = [int(x) for x in xdata]
-    # print(int_xdata, trans_dic.keys())
-    y = [trans_dic[i]["Stability"] for i in int_xdata]
-    xdata = np.float64([float(x/int_step_nb) for x in xdata])
-    try :
-        popt, pcov = curve_fit(func, xdata, y, maxfev = 100)
+    y_actual = [trans_dic[i]["Stability"] for i in int_xdata]
+    xdata_scaled = np.float64([float(x / int_step_nb) for x in xdata])
+
+    try:
+        popt, pcov = curve_fit(func, xdata_scaled, y_actual, maxfev=100)
     except RuntimeError:
         popt = [0, 0, 1]
+        pcov = np.zeros((3, 3))
+
+    # Calculate predicted y values and R^2
+    y_predicted = func(xdata_scaled, *popt)
+    residuals = np.array(y_actual) - np.array(y_predicted)
+    ss_res = np.sum(residuals ** 2)
+    ss_tot = np.sum((np.array(y_actual) - np.mean(y_actual)) ** 2)
+    r_squared = 1 - (ss_res / ss_tot)
+
+    # Standard errors of the parameters
+    perr = np.sqrt(np.diag(pcov))
+
+   # R^2とパラメータ情報を凡例用にフォーマット
+    legend_text = (
+        f"Sigmoid Curve Approximation\n"
+        f"$R^2 = {r_squared:.4f}$\n"
+        f"$a = {popt[0]:.4f} \pm {perr[0]:.4f}$\n"
+        f"$b = {popt[1]:.4f} \pm {perr[1]:.4f}$\n"
+        f"$c = {popt[2]:.4f} \pm {perr[2]:.4f}$"
+    )
+
+    # プロット部分
     plt.figure()
-    plt.plot(xdata, y, 'b-', label='Stably Bonded Base Pair Count / Domain Count')
-    plt.plot(xdata, func(xdata, *popt), 'r-', label='Sigmoid Curve Approximation')
-    # Add labels and a legend
+    plt.plot(xdata_scaled, y_actual, 'b-', label='Stably Bonded Base Pair Count / Domain Count')  # 青い線
+    plt.plot(xdata_scaled, y_predicted, 'r-', label=legend_text)  # 赤い線に凡例を設定
     plt.xlabel('Steps (scaled)')
     plt.ylabel('Stability')
-    plt.legend()
-    plt.savefig(f"{path}curv_fit.png")  # グラフを保存
+    plt.legend(loc='best', fontsize='small')  # 凡例の位置とフォントサイズを設定
+    plt.savefig(f"{path}curv_fit.png")
     plt.show()
     plt.close()
 
-    return popt
+
+    # プロット部分
+    # plt.figure()
+    # plt.plot(xdata_scaled, y_actual, 'b-', label='Stably Bonded Base Pair Count / Domain Count')
+    # plt.plot(xdata_scaled, y_predicted, 'r-', label=legend_text)  # 赤い線の凡例に情報を含める
+    # plt.xlabel('Steps (scaled)')
+    # plt.ylabel('Stability')
+    # plt.legend(loc='best', fontsize='small')  # フォントサイズを調整可能
+    # plt.savefig(f"{path}curv_fit.png")
+    # plt.show()
+    # plt.close()
+
+    # # Plotting
+    # plt.figure()
+    # plt.plot(xdata_scaled, y_actual, 'b-', label='Stably Bonded Base Pair Count / Domain Count')
+    # plt.plot(xdata_scaled, y_predicted, 'r-', label='Sigmoid Curve Approximation')
+    # plt.plot(label=legend_text)
+    # plt.xlabel('Steps (scaled)')
+    # plt.ylabel('Stability')
+    # plt.legend()
+    # plt.savefig(f"{path}curv_fit.png")
+    # plt.show()
+    # plt.close()
+
+    # Print results
+    print(f"R^2: {r_squared}")
+    print(f"Parameters: a = {popt[0]:.4f} ± {perr[0]:.4f}, b = {popt[1]:.4f} ± {perr[1]:.4f}, c = {popt[2]:.4f} ± {perr[2]:.4f}")
+
+    return popt, r_squared, perr
+
     
 
 

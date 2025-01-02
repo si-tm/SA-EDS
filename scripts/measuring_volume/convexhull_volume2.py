@@ -34,6 +34,7 @@ def get_r(particle2r, strands):
     return x, y, z
 
 def plot_points(points):
+    print(points)
     points = np.array(points)
     hull = ConvexHull(points)
 
@@ -50,6 +51,7 @@ def plot_points(points):
         s = np.append(s, s[0])  # Here we cycle back to the first coordinate
         ax.plot(points[s, 0], points[s, 1], points[s, 2], "r-")
         # matplotlib.pyplot.close()
+    plt.show()
     plt.close()
 
 
@@ -131,6 +133,15 @@ def convexhull_volume_all_strands_meandev(target_dir):
         x, y, z = get_r(particle2r, strands2particle[strand])
         volumes[strand] = convexhull_volume(x, y, z)
         # plot(x, y, z, target_dir)
+        points = []
+        for i, xi in enumerate(x):
+            tmp = []
+            tmp.append(x[i])
+            tmp.append(y[i])
+            tmp.append(z[i])
+            points.append(tmp)
+        print(len(points))
+        # plot_points(points)
         # plot_points(volumes[strand])
     
     print(volumes)

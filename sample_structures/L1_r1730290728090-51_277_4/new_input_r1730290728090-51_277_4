@@ -1,0 +1,51 @@
+####  PROGRAM PARAMETERS  ####
+##############################
+sim_type = VMMC
+backend = CPU
+#debug = 1
+seed = 42
+
+##############################
+####    SIM PARAMETERS    ####
+##############################
+steps = 1000000
+newtonian_steps = 103
+diff_coeff = 2.50
+thermostat = john
+
+list_type = cells
+ensemble = nvt
+delta_translation = 0.22
+delta_rotation = 0.22
+
+T = 277 K
+dt = 0.003
+verlet_skin = 0.5
+
+##############################
+####    INPUT / OUTPUT    ####
+##############################
+topology = home/user/SA-EDS/int_second/L1_r1730290728090-51/r1730290728090-51_277_4/generated_r1730290728090-51_277_1.top
+conf_file = home/user/SA-EDS/int_second/L1_r1730290728090-51/r1730290728090-51_277_4/generated_r1730290728090-51_277_4.dat
+lastconf_file = home/user/SA-EDS/int_second/L1_r1730290728090-51/r1730290728090-51_277_4/last_conf_r1730290728090-51_277_4.dat.dat
+trajectory_file = home/user/SA-EDS/int_second/L1_r1730290728090-51/r1730290728090-51_277_4/trajectory_r1730290728090-51_277_4.dat
+refresh_vel = 1
+log_file = home/user/SA-EDS/int_second/L1_r1730290728090-51/r1730290728090-51_277_4/log_r1730290728090-51_277_4.dat
+no_stdout_energy = 1
+restart_step_counter = 1
+energy_file = home/user/SA-EDS/int_second/L1_r1730290728090-51/r1730290728090-51_277_4/energy_r1730290728090-51_277_4.dat
+print_conf_interval = 100000
+print_energy_every = 100000
+time_scale = linear
+external_forces = 0
+
+data_output_1 = {
+	print_every = 10000
+	name = home/user/SA-EDS/int_second/L1_r1730290728090-51/r1730290728090-51_277_4/hb_r1730290728090-51_277_4.dat
+	col_1 = {
+		type = step
+	}
+	col_2 = {
+		type = hb_energy
+	}
+}

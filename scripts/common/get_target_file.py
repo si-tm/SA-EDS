@@ -145,7 +145,7 @@ def get_bonds(dir_path):
 
 def get_req(dir_path):
     d = file_dic(dir_path)
-    # print(d)
+    # print(dir_path, d)
     return d["req"]
 
 def get_rxyz(dir_path):

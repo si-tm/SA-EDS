@@ -41,7 +41,7 @@ use b/c as y_axis
 """ 
 
 type_of_l = "L1"
-target = "int_initial"
+target = "int_initial-int_second"
 
 class L1Individual(Individual):
     strands: Iterable[tuple[Strand,float]]
@@ -60,11 +60,12 @@ class L1Individual(Individual):
     # export_seq.py にて生成
     seq_dic = {'a': ['CGGCCAGTAA', 'CGGCCAGTAA', 'CGTGCACGTT', 'AACACTGTTC', 'TACATCAATG', 'AGAATCGATT', 'GGCCCGCGGG', 'CAGGTGTTGA', 'GCACCGTGCT', 'CTTGCGCCCG', 'CTTTTCACCC', 'CCAGGCTGGG', 'GGCTTCCGAC', 'ATCGGTCGAT', 'CAAATATTTG', 'CCTCTCGACA', 'CAGCCTGCTG', 'CGCTCAGCGT', 'CACGTCGACG', 'GGGAGCTCCT'], 'b': ['GCCGGTGAAC', 'GCCGGTGAAC', 'AGGCTCCAGC', 'GACTAACGCA', 'GGCCTAGGCT', 'TCTACTGTGC', 'TGGTCGTAAA', 'TGGATTATCC', 'CGTACTGGCG', 'TTAGCGACCT', 'AGCTTAAGCG', 'ATCCTTTTCC', 'AAGCGCTTCG', 'CAGGCACCTA', 'CGTAAACGGG', 'AACCTGGGTT', 'TCGCTCTTAT', 'GGATACCGGG', 'TATTGGTGTA', 'GTGCGTAAAT'], 'c': [], 'd': [], 'e': [], 'f': []}
     domains : {}
-    first_indexes = [[0, 1, 3, 9, 11, 4, 14], [0, 1, 3, 9, 11, 4, 14], [0, 1, 11, 4, 6, 5, 12], [0, 1, 3, 9, 11, 4, 5], [1, 8, 10, 11, 6, 7, 12], [0, 1, 3, 9, 5], [8, 12, 14, 13], [1, 8, 9, 11, 14, 13], [2, 6, 7], [2, 1, 6, 7], [2, 1, 11, 4, 6, 7], [2, 1, 4, 6, 7], [2, 1, 11, 6, 7, 14], [8, 11, 4, 12, 13], [8, 11, 4, 12, 14, 13], [8, 12, 13], [8, 12, 14, 13], [1, 8, 9, 11, 14, 13], [2, 6, 7], [2, 1, 6, 7]]
+    first_indexes = [[0, 1, 3, 4, 11, 14], [1, 6, 7, 10, 11, 14], [7, 8, 10, 12, 13, 14], [3, 6, 7, 10, 11, 14], [0, 3, 4, 12, 13, 14], [0, 1, 4, 10, 13, 14], [0, 3, 4, 10, 13, 14], [1, 3, 4, 7, 8, 13], [1, 3, 10, 11, 14], [1, 2, 7, 10, 11, 14], [0, 3, 4, 11, 13, 14], [0, 3, 4, 12, 13, 14], [0, 1, 5, 11, 13, 14], [0, 3, 4, 8, 13, 14], [0, 3, 4, 9, 11], [3, 4, 9, 12, 13, 14], [1, 2, 6, 8, 10, 11], [1, 2, 6, 8, 10, 11], [1, 2, 6, 8, 10, 11], [1, 2, 6, 8, 10, 11], [1, 2, 6, 8, 10, 11], [1, 2, 6, 8, 10, 11], [1, 2, 6, 8, 10, 11], [1, 2, 6, 8, 10, 11], [1, 2, 6, 8, 10, 11], [1, 2, 6, 8, 10, 11]]
     eigenvalue_2 : float
 
     def __init__(self, specs:dict[str,Any]={}, indexes: [bool] = [], a_string = "GTTACTTGGA", b_string = "GGTTTTTTGC", nb_comb = 16, **kwargs : Any) -> None:
         seq_num = random.randint(0, 19) 
+        print(seq_num)
         self.structure = self.init_structure()
         self.specs = specs
         self.nb_comb = nb_comb
@@ -273,7 +274,7 @@ def import_sigmoid_model():
         regr_loaded = pickle.load(f)
     return regr_loaded
 
-def predict_sigmoid(input, min_val=-3, max_val=5):
+def predict_sigmoid(input, min_val=5, max_val=23):
     regr = import_sigmoid_model()
     input_reshaped = np.array(input).reshape(1, -1)
     sigmoid = regr.predict(input_reshaped)[0]
@@ -288,19 +289,19 @@ def set_eval(ind, averageModel, scale=10.0 ):
     fit2 = predict_sigmoid(ind.input)
     # print("fit1 : ", fit1)
     features = (fit0, fit1, fit2)
-    # print(features, score)
+    print(features, score)
     return (score,), features
 
-def run_qdpy(dirpath="/home/user/SA-EDS/results/int_initial_L1"):
+def run_qdpy(dirpath="/home/user/SA-EDS/results/int_second_L1"):
     # Create container and algorithm. Here we use MAP-Elites, by illuminating a Grid container by evolution.
         
     grid = containers.Grid(
         # shape=(16,16,8), 
-        shape=(9, 16,16), 
+        shape=(8, 16,16), 
         max_items_per_bin=1, 
         fitness_domain=((0.0, 1.),),  
         # features_domain=((0., 1.), (1, 1728))) #軸 deviation, number of strands 
-        features_domain=( (0., 6.), (0., 1.), (0., 1.))) #軸 free energy, sigmoid, temp
+        features_domain=( (0., 7.), (0., 1.), (0., 1.))) #軸 free energy, sigmoid, temp
         # features_domain=( (277., 358.), (0., 1.), (0., 1.))) #軸 free energy, sigmoid, temp
     
     algo = L1Evo(
@@ -309,12 +310,13 @@ def run_qdpy(dirpath="/home/user/SA-EDS/results/int_initial_L1"):
         # budget=1000,
         # budget=3000, 
         batch_size=100,
+        # batch_size=10,
         optimisation_task="maximization")
     
     # Create a logger to pretty-print everything and generate output data files
     logger = algorithms.AlgorithmLogger(algo)
 
-    with open('/home/user/SA-EDS/saved_model/bagging_model_L1_int_initial.pkl', 'rb') as f:
+    with open(f'/home/user/SA-EDS/saved_model/bagging_model_L1_{target}.pkl', 'rb') as f:
         
     # with open(f'/home/user/SA-EDS/saved_model/bagging_model_L1_initial_sigmo.pkl', 'rb') as f:
         regr_loaded = pickle.load(f)

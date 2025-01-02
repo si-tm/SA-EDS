@@ -85,7 +85,7 @@ def bagging_regressor(x_train,x_test,y_train,y_test, target):
     # elif type_of_l == "L3":
     #     max_value = 150
 
-    max_lim = 20
+    max_lim = 40
     # min_lim = -10
     min_lim = 0
 
