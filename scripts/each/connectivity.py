@@ -29,8 +29,7 @@ def ind2eigen(type_of_l, indexes, structure, temperature, domains):
     e = calcEigenvalues(G)
     return e
     
-
-
+# 修正した getGraph_deltaG 関数
 def getGraph_deltaG(dic, seq, temp, type_of_l="L1"):
 
     # get domain
@@ -38,10 +37,10 @@ def getGraph_deltaG(dic, seq, temp, type_of_l="L1"):
         a = Domain(str(seq['a']), name='Domain a', material='dna')
         b = Domain(str(seq['b']), name='Domain b', material='dna')
         domain_name = {
-            "a" : a,
-            "b" : b,
-            "a*" : ~a,
-            "b*" : ~b
+            "a": a,
+            "b": b,
+            "a*": ~a,
+            "b*": ~b
         }
     elif type_of_l == "L3":
 
@@ -52,27 +51,25 @@ def getGraph_deltaG(dic, seq, temp, type_of_l="L1"):
         e = Domain(str(seq['e']), name='Domain e', material='dna')
         f = Domain(str(seq['f']), name='Domain f', material='dna')
         domain_name = {
-            "a" : a,
-            "b" : b,
-            "c" : c,
-            "d" : d,
-            "e" : e,
-            "f" : f,
-            "a*" : ~a,
-            "b*" : ~b,
-            "c*" : ~c,
-            "d*" : ~d,
-            "e*" : ~e,
-            "f*" : ~f
+            "a": a,
+            "b": b,
+            "c": c,
+            "d": d,
+            "e": e,
+            "f": f,
+            "a*": ~a,
+            "b*": ~b,
+            "c*": ~c,
+            "d*": ~d,
+            "e*": ~e,
+            "f*": ~f
         }
     else:
         print("input type of l")
         return
-    
 
     # generate graph
     G = nx.Graph()
-    nodes = set()
     strands = {}
     num = 0
 
@@ -89,43 +86,57 @@ def getGraph_deltaG(dic, seq, temp, type_of_l="L1"):
     # calc delta G
     s_conc = {}
     for str_name in strands:
-        # s_conc[str_name] = 1e-8
         s_conc[strands[str_name]] = 1e-8
 
     t1 = Tube(strands=s_conc, complexes=SetSpec(max_size=2), name='t1')
     model1 = nupackModel(material='dna', kelvin=float(temp))
     tube_results = tube_analysis(tubes=[t1], model=model1)
 
+    # 明示的にノードを追加
+    for str_name in strands:
+        G.add_node(str_name)
+
     # add edges
     for complex in tube_results.complexes:
-        # print(complex.strands[0].name, complex.strands[1].name, tube_results.complexes[complex].free_energy)
-        # print(complex.strands)
-        if tube_results.complexes[complex].free_energy*(-1) < 0:
+        if tube_results.complexes[complex].free_energy * (-1) < 0:
             continue
         if len(complex.strands) == 2:
-            G.add_edge(complex.strands[0].name, complex.strands[1].name, weight=tube_results.complexes[complex].free_energy*(-1))
+            G.add_edge(
+                complex.strands[0].name,
+                complex.strands[1].name,
+                weight=tube_results.complexes[complex].free_energy * (-1)
+            )
         elif len(complex.strands) == 1:
-            G.add_edge(complex.strands[0].name, complex.strands[0].name, weight=tube_results.complexes[complex].free_energy*(-1))
-        
+            G.add_edge(
+                complex.strands[0].name,
+                complex.strands[0].name,
+                weight=tube_results.complexes[complex].free_energy * (-1)
+            )
+
     # plot
-    # options = {
-    #     "font_size": 12,
-    #     "node_size": 3000,
-    #     "node_color": "white",
-    #     "edgecolors": "black",
-    #     "linewidths": 5,
-    #     "width": 5,
-    # }
+    pos = nx.circular_layout(G)
+    options = {
+        "font_size": 20,
+        "node_size": 3000,
+        "node_color": "white",
+        "edgecolors": "black",
+        "linewidths": 5,
+        "width": 5,
+    }
 
-    # nx.draw_networkx(G, **options)
+    nx.draw_networkx(G, pos, **options)
+    edge_labels = nx.get_edge_attributes(G, 'weight')
+    edge_labels = {k: f"{v:.2f}" for k, v in edge_labels.items()}
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color='red', font_size=12)
 
-    # # Set margins for the axes so that nodes aren't clipped
-    # ax = plt.gca()
-    # ax.margins(0.20)
-    # plt.axis("off")
-    # plt.show()
+    ax = plt.gca()
+    ax.margins(0.20)
+    plt.axis("off")
+    plt.savefig("/home/user/SA-EDS/results/test.png", format='png', dpi=300)
+    plt.show()
 
     return G
+
 
 def calcEigenvalues(G):
     # どのノードとも繋がっていないノードを見つけて削除します
@@ -141,33 +152,33 @@ def calcEigenvalues(G):
         return e_sort[0]
     return e_sort[1]
    
-# def main():
-#     e = ind2eigen(type_of_l="L1",
-#               indexes=[1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#               structure=["a a", "a a*","a b","a b*","a* a","a* a*","a* b","a* b*","b a","b a*","b b","b b*","b* a","b* a*","b* b","b* b*"],
-#               temperature=277,
-#               domains={'a' : 'CGGCCAGTAA', 'b' : 'GCCGGTGAAC'})
-#     print(e)
-
 def main():
-    if len(sys.argv) != 3:
-        print("usage : python3 connectivity L{1-3} target")
-    type_of_l = sys.argv[1]
-    target = sys.argv[2]
-    file_path=f"home/user/SA-EDS/dataset/x_{target}_{type_of_l}.pkl"
-    f = open(file_path, "rb")
-    data = pickle.load(f)
-    for (temp, dir) in data:
-        print(temp, dir)
-        dic = data[(temp, dir)]["domain"]
-        seq = data[(temp, dir)]["sequence"]
-        print(data[(temp, dir)])
-        G = getGraph_deltaG(dic, seq, temp,type_of_l=type_of_l)
-        e = calcEigenvalues(G)
-        data[(temp, dir)]["eigenValue_2"] = e
-        print(data[(temp, dir)])
-    with open(file_path, 'wb') as file:
-        pickle.dump(data, file)
+    e = ind2eigen(type_of_l="L1",
+              indexes=[0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0],
+              structure=["a a", "a a*","a b","a b*","a* a","a* a*","a* b","a* b*","b a","b a*","b b","b b*","b* a","b* a*","b* b","b* b*"],
+              temperature=277,
+              domains={'a' : 'CGGCCAGTAA', 'b' : 'GCCGGTGAAC'})
+    print(e)
+
+# def main():
+    # if len(sys.argv) != 3:
+    #     print("usage : python3 connectivity L{1-3} target")
+    # type_of_l = sys.argv[1]
+    # target = sys.argv[2]
+    # file_path=f"home/user/SA-EDS/dataset/x_{target}_{type_of_l}.pkl"
+    # f = open(file_path, "rb")
+    # data = pickle.load(f)
+    # for (temp, dir) in data:
+    #     print(temp, dir)
+    #     dic = data[(temp, dir)]["domain"]
+    #     seq = data[(temp, dir)]["sequence"]
+    #     print(data[(temp, dir)])
+    #     G = getGraph_deltaG(dic, seq, temp,type_of_l=type_of_l)
+    #     e = calcEigenvalues(G)
+    #     data[(temp, dir)]["eigenValue_2"] = e
+    #     print(data[(temp, dir)])
+    # with open(file_path, 'wb') as file:
+    #     pickle.dump(data, file)
    
 if __name__ == '__main__':
     main()

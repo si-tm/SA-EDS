@@ -80,13 +80,14 @@ def bagging_regressor(x_train,x_test,y_train,y_test, target):
     train_predictions = er.predict(x_train)
     res = linregress(y_test, test_predictions)
 
-    # if type_of_l == "L1" or type_of_l == "L2":
-    #     max_value = 20
-    # elif type_of_l == "L3":
-    #     max_value = 150
+    if type_of_l == "L1" or type_of_l == "L2":
+        max_lim = 40
+    elif type_of_l == "L3":
+        max_lim = 150
 
-    max_lim = 40
-    # min_lim = -10
+
+    # max_lim = 40
+    # # min_lim = -10
     min_lim = 0
 
     plt.figure(figsize=(6, 6))

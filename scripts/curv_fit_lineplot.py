@@ -1,0 +1,325 @@
+#! /bin/python
+
+import os.path as osp
+import common.get_target_file as gtf
+import measuring_volume.get_top_data as gtd
+import matplotlib.pyplot as plt
+import networkx as nx
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit
+import sys
+import pickle
+import subprocess
+import glob
+import seaborn as sns
+import pandas as pd
+
+def breakdown_trajectory_file(filename, path="./"):
+    # print(filename, path)
+    with open(filename, "r") as file:
+        lines = file.readlines()
+    i = 0
+    expi = 0
+    basename = osp.splitext(osp.basename(filename))[0]
+    to_export = lines[0]
+    size = len(lines)
+    while i < size:
+        i+= 1
+        if i >= size or "t =" in lines[i]:
+            with open(osp.join(path,basename+"_"+str(expi)),"w") as expfile:
+                expfile.write(to_export)
+                expi +=1
+                if i <size:
+                    to_export = lines[i]
+        else:
+            to_export += lines[i]
+
+def readbonds_str2dic(line):
+    # ['696', '697', '0.0128922', '0', '-0', '0', '0', '0', '0', '0.0128922\n']
+    key_lst = ["id1", "id2", "FENE", "BEXC", "STCK", "NEXC", "HB", "CRSTCK", "CXSTCK", "total"]
+    new_dic = {}
+    for i, str_v in enumerate(line.split(" ")):
+        if key_lst[i] == "id1" or key_lst[i] == "id2":
+            new_dic[key_lst[i]] = int(str_v.replace("\n",""))
+        else:
+            new_dic[key_lst[i]] = float(str_v.replace("\n",""))
+    return new_dic
+
+def HB_connectivity(path, type_of_l):
+    # bonds_0 - bonds_9について、HBで結合している個数を出力する
+    id_pair_dic = {
+        9 : set(),
+        8 : set(),
+        7 : set(),
+        6 : set(),
+        5 : set(),
+        4 : set(),
+        3 : set(),
+        2 : set(),
+        1 : set(),
+        0 : set()
+       
+    }
+
+
+    for i in range(10):
+        target = 9 - i
+        filename = path + "bonds_" + str(target)
+        with open(filename, "r") as file:
+            lines = file.readlines()
+        # id1 id2 FENE BEXC STCK NEXC HB CRSTCK CXSTCK total
+        for l in lines:
+            if "#" not in l:
+                bond_dic = readbonds_str2dic(l)
+                if bond_dic["HB"] < 0:
+                    id_pair_dic[target].add((bond_dic["id1"], bond_dic["id2"]))
+
+    return id_pair_dic
+
+def count_domain(target_dir):
+    req_dir = gtf.get_req(target_dir)
+    f = open(req_dir, 'r')
+    nb_domain = 0
+    for l in f:
+        if l[0] == 's' and "@initial" in l:
+            nb_domain = nb_domain + (l.split(" ").index("@initial") - l.split(" ").index("=") - 1)*5
+        elif l[0] == 's':
+            nb_domain = nb_domain + (l.split(" ").index("@") - l.split(" ").index("=") - 1)*5
+
+    return nb_domain
+
+def stability(path, type_of_l):
+    id_pair_dic = HB_connectivity(path, type_of_l)
+
+    # trans_dic[step] = {"disociation" : 4, "binding" : 3, "stability" : 2}
+    trans_dic = {}
+    int_step_nb = 100000
+
+    nb_domain = count_domain(path)
+
+
+    for i in range(9):
+        # 解離: Dissociation
+        # 結合: Binding
+        # 安定: Stability
+        # domainの数で割る
+        step_nb = (i + 1)*int_step_nb
+        trans_dic[step_nb] = {}
+        trans_dic[step_nb]["Dissociation"] = len(id_pair_dic[i] - id_pair_dic[i + 1]) / nb_domain
+        trans_dic[step_nb]["Binding"] = len(id_pair_dic[i + 1] - id_pair_dic[i]) / nb_domain
+        trans_dic[step_nb]["Stability"] = len(id_pair_dic[i] & id_pair_dic[i + 1]) / nb_domain
+
+    xdata = np.linspace(int_step_nb, 9*int_step_nb, 9)
+    int_xdata = [int(x) for x in xdata]
+    # print(int_xdata, trans_dic.keys())
+    y = [trans_dic[i]["Stability"] for i in int_xdata]
+    return y
+
+
+def fit_sigmoid(path, type_of_l):
+    strands2particle, particle2strand = gtd.make_initial_strands_data(path)
+    id_pair_dic = HB_connectivity(path, type_of_l)
+
+    trans_dic = {}
+    int_step_nb = 100000
+    nb_domain = count_domain(path)
+
+    for i in range(9):
+        step_nb = (i + 1) * int_step_nb
+        trans_dic[step_nb] = {}
+        trans_dic[step_nb]["Dissociation"] = len(id_pair_dic[i] - id_pair_dic[i + 1]) / nb_domain
+        trans_dic[step_nb]["Binding"] = len(id_pair_dic[i + 1] - id_pair_dic[i]) / nb_domain
+        trans_dic[step_nb]["Stability"] = len(id_pair_dic[i] & id_pair_dic[i + 1]) / nb_domain
+
+    xdata = np.linspace(int_step_nb, 9 * int_step_nb, 9)
+    int_xdata = [int(x) for x in xdata]
+    y_actual = [trans_dic[i]["Stability"] for i in int_xdata]
+    xdata_scaled = np.float64([float(x / int_step_nb) for x in xdata])
+
+    try:
+        popt, pcov = curve_fit(func, xdata_scaled, y_actual, maxfev=100)
+    except RuntimeError:
+        popt = [0, 0, 1]
+        pcov = np.zeros((3, 3))
+
+    # Calculate predicted y stabilityues and R^2
+    y_predicted = func(xdata_scaled, *popt)
+    residuals = np.array(y_actual) - np.array(y_predicted)
+    ss_res = np.sum(residuals ** 2)
+    ss_tot = np.sum((np.array(y_actual) - np.mean(y_actual)) ** 2)
+    r_squared = 1 - (ss_res / ss_tot)
+
+    # Standard errors of the parameters
+    perr = np.sqrt(np.diag(pcov))
+
+   # R^2とパラメータ情報を凡例用にフォーマット
+    legend_text = (
+        f"Sigmoid Curve Approximation\n"
+        f"$R^2 = {r_squared:.4f}$\n"
+        f"$a = {popt[0]:.4f} \pm {perr[0]:.4f}$\n"
+        f"$b = {popt[1]:.4f} \pm {perr[1]:.4f}$\n"
+        f"$c = {popt[2]:.4f} \pm {perr[2]:.4f}$"
+    )
+
+    # プロット部分
+    plt.figure()
+    plt.plot(xdata_scaled, y_actual, 'b-', label='Stably Bonded Base Pair Count / Domain Count')  # 青い線
+    plt.plot(xdata_scaled, y_predicted, 'r-', label=legend_text)  # 赤い線に凡例を設定
+    plt.xlabel('Steps (scaled)')
+    plt.ylabel('Stability')
+    plt.legend(loc='best', fontsize='small')  # 凡例の位置とフォントサイズを設定
+    plt.savefig(f"{path}curv_fit.png")
+    plt.show()
+    plt.close()
+
+
+    # プロット部分
+    # plt.figure()
+    # plt.plot(xdata_scaled, y_actual, 'b-', label='Stably Bonded Base Pair Count / Domain Count')
+    # plt.plot(xdata_scaled, y_predicted, 'r-', label=legend_text)  # 赤い線の凡例に情報を含める
+    # plt.xlabel('Steps (scaled)')
+    # plt.ylabel('Stability')
+    # plt.legend(loc='best', fontsize='small')  # フォントサイズを調整可能
+    # plt.savefig(f"{path}curv_fit.png")
+    # plt.show()
+    # plt.close()
+
+    # # Plotting
+    # plt.figure()
+    # plt.plot(xdata_scaled, y_actual, 'b-', label='Stably Bonded Base Pair Count / Domain Count')
+    # plt.plot(xdata_scaled, y_predicted, 'r-', label='Sigmoid Curve Approximation')
+    # plt.plot(label=legend_text)
+    # plt.xlabel('Steps (scaled)')
+    # plt.ylabel('Stability')
+    # plt.legend()
+    # plt.savefig(f"{path}curv_fit.png")
+    # plt.show()
+    # plt.close()
+
+    # Print results
+    print(f"R^2: {r_squared}")
+    print(f"Parameters: a = {popt[0]:.4f} ± {perr[0]:.4f}, b = {popt[1]:.4f} ± {perr[1]:.4f}, c = {popt[2]:.4f} ± {perr[2]:.4f}")
+
+    return popt, r_squared, perr, trans_dic
+
+def strand_connectivity(path, type_of_l):
+    strands2particle, particle2strand = gtd.make_initial_strands_data(path)
+    id_pair_dic = HB_connectivity(path, type_of_l)
+
+    # trans_dic[step] = {"disociation" : 4, "binding" : 3, "stability" : 2}
+    trans_dic = {}
+    nb_domain = count_domain(path)
+
+    # for i in range(9):
+        # 解離: Dissociation
+        # 結合: Binding
+        # 安定: Stability
+        # domainの数で割る
+        # print((i + 1)*20000, "\tsteps")
+        # print("解離", len(id_pair_dic[i] - id_pair_dic[i + 1]), "/", len(particle2strand))
+        # print("結合", len(id_pair_dic[i + 1] - id_pair_dic[i]), "/", len(particle2strand))
+        # print("安定", len(id_pair_dic[i] & id_pair_dic[i + 1]), "/", len(particle2strand))
+        # print("解離", len(id_pair_dic[i] - id_pair_dic[i + 1]), "/", nb_domain)
+        # print("結合", len(id_pair_dic[i + 1] - id_pair_dic[i]), "/", nb_domain)
+        # print("安定", len(id_pair_dic[i] & id_pair_dic[i + 1]), "/", nb_domain)
+
+    # for i in range(9):
+    #     G = nx.Graph()
+    #     for strand in strands2particle:
+    #         G.add_node(str(strand))
+    #     for pair in id_pair_dic[i]:
+    #         G.add_edge(str(particle2strand[pair[0]]), str(particle2strand[pair[1]]))
+    #     # グラフの描画
+    #     # pos = nx.spring_layout(G)  # レイアウトの計算
+    #     pos = nx.circular_layout(G)
+    #     nx.draw(G, pos, with_labels=True, node_size=500, font_size=16, font_color='white')
+
+        # # 新しい図を作成
+        # plt.figure()
+        
+        # # グラフの描画
+        # pos = nx.circular_layout(G)
+        # nx.draw(G, pos, with_labels=True, node_size=500, font_size=16, font_color='white')
+
+        # # グラフのタイトルと保存
+        # plt.title(f"{i + 1}*100000 step")
+        # plt.savefig(f"{path}stable_connection_{(i + 1) * 100000}.png")  # ステップ数を含んだファイル名で保存
+        # plt.close()  # 図を閉じる
+
+def func(x, a, b, c):
+    return a /(np.exp(-b * x) + c)
+
+def calc_curv_fit(filename, extra_path, type_of_l):
+
+    file_dic = gtf.file_dic(extra_path)
+    if "trajectory1" not in file_dic.keys():
+        breakdown_trajectory_file(filename, path=extra_path)
+        subprocess.run(["/home/user/venv/bin/python3", "/home/user/SA-EDS/scripts/get_trajectory.py", type_of_l, extra_path])
+    strand_connectivity(path=extra_path, type_of_l=type_of_l)
+    print(extra_path)
+    try:
+        # [a, b, c] = fit_sigmoid(path=extra_path, type_of_l=type_of_l)
+        popt, r_squared, perr, trans_dic = fit_sigmoid(path=extra_path, type_of_l=type_of_l)
+    except RuntimeError:
+        [a, b, c] = [0, 0, 0]
+
+    return popt, trans_dic
+
+
+if __name__ == '__main__':
+    if len(sys.argv) != 4:
+        print("usage : python3 curv_fit_lineplot.py type_of_l target")
+
+    # target = "int_initial"
+    # type_of_l = "L3"
+    type_of_l = sys.argv[1]
+    target = sys.argv[2]
+    base_dir = "/home/user/SA-EDS/"
+
+    dirs = glob.glob(base_dir + target + "/" + type_of_l + "*")
+    trans_data = []
+    trans_fitted_data = []
+    # trans_data.append({"steps": 1, "data_name": "~~~", "stability": 1})
+
+    for dir10 in dirs:
+        dir = glob.glob(dir10 + "/*")
+        for dir1 in dir:
+            print("dir1", dir1)
+            try:
+                filename = gtf.get_traj(dir1)
+                extra_path = dir1 + "/"
+                tmp_temp = extra_path.split("_")[-2]
+                if tmp_temp == "348" or tmp_temp == "358":
+                    a = 0
+                    b = 0
+                    c = 1
+                else:
+                    popt, trans_dic = calc_curv_fit(filename, extra_path, type_of_l)
+
+                    for i in range(9):
+                        data_name = dir1.split("/")[-1]
+                        trans_data.append({"steps": i + 1, "data_name": data_name, "stability": trans_dic[100000*(i + 1)]["Stability"]})
+                        trans_fitted_data.append({"steps": i + 1, "data_name": data_name, "stability": func(i + 1, popt[0], popt[1], popt[2])})
+            except Exception as e:
+                print(f"error: {e}")
+    
+
+    trans = pd.DataFrame(trans_data)
+    trans_fitted = pd.DataFrame(trans_fitted_data)
+
+    print(trans.head(12))
+    print(trans_fitted.head(12))
+
+    plt.rcParams.update({'font.size': 8})
+
+    sns.lineplot(data=trans, x="steps", y="stability", label="number of stability bases divided by number of domain")
+    sns.lineplot(data=trans_fitted, x="steps", y="stability", label="fitted line with sigmoid function")
+    # グラフを表示
+    plt.show()
+
+    # グラフを保存
+    plt.savefig("/home/user/SA-EDS/results/lineplot.png")
+
+
+

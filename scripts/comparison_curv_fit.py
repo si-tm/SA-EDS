@@ -9,7 +9,7 @@ def get_step(target, target_library):
     # 1から9までのstabilityのlistを返す
     try:
         target = target + "/"
-        return cf.stability(target, target_library)
+        return cf.stability_divided_by_base(target, target_library)
     except Exception as e:
         print(f"Error in get_step: {e}")
         return []
@@ -36,13 +36,15 @@ def plot(data, target_library, temp, color):
     plt.show()
 
 def main():
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 4:
         print("usage: python3 comparison_curv_fit.py <type of l> <target>")
     steps = list(range(1, 10))
     target_library = sys.argv[1]
     target = sys.argv[2]
-    targets = glob.glob(f"/home/user/SA-EDS/{target}/{target_library}_initial_*/{target_library}-*")
-    print(f"/home/user/SA-EDS/{target}/{target_library}_initial_*/{target_library}-*")
+    targets = glob.glob(f"/home/user/SA-EDS/{target}/{target_library}_*/*")
+    # targets = glob.glob(f"/home/user/SA-EDS/{target}/{target_library}_initial_*/{target_library}-*")
+    print(f"/home/user/SA-EDS/{target}/{target_library}_*/*")
+    # print(f"/home/user/SA-EDS/{target}/{target_library}_initial_*/{target_library}-*")
     print(f"Targets found: {targets}")
     
     # データを作成
@@ -71,6 +73,9 @@ def main():
     # カスタムカラーリストを作成
 
     temp_list = ["277", "298", "308", "318", "328", "338"]
+    temp_list = ["277", "308", "328"]
+    if sys.argv[2] == "int_second":
+       temp_list = ["277", "308", "328"]
     color_list = [(0.9692676429840149, 0.3347286967411282, 0.6175245379502425), \
                 (0.8826628895184139, 0.6205292536652166, 0.13305832188134544), \
                 (0.45778524885227995, 0.8205005154203934, 0.28102349811240404), \
@@ -81,7 +86,8 @@ def main():
     for i, temp in enumerate(temp_list):
         plot(data, target_library, temp, color_list[i])  # 色をリストから取得
     
-    plt.savefig(f'/home/user/SA-EDS/fig/curv_{target_library}.png') 
+    plt.savefig(f'/home/user/SA-EDS/fig/curv_{target_library}_{sys.argv[2]}_3.png') 
+    print(f'/home/user/SA-EDS/fig/curv_{target_library}_{sys.argv[2]}_3.png')
 
 if __name__ == '__main__':
     main()

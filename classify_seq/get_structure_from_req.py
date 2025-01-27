@@ -6,7 +6,13 @@ import get_target_file as gtf
 
 class req():
     def __init__(self, target_dir):
-        self.req = gtf.get_req(target_dir)
+        try:
+            # `gtf.get_req` を試みる
+            self.req = gtf.get_req(target_dir)
+        except Exception as e:
+            # エラーが発生した場合はログを出力して `target_dir` を代入
+            print(f"Failed to get request: {e}")  # 標準出力
+            self.req = target_dir
         self.seq2req_dic = {}  
         self.req2seq_dic = {}
         # self.get_structure_req()
@@ -36,6 +42,16 @@ class req():
     
     def get_domain_seq(self, target_dir):
         self.req = gtf.get_req(target_dir)
+        f = open(self.req, "r")
+        domains = {}
+        for l in f:
+            if l[:6] == "domain":
+                # domain a = CGGCCAGTAA
+                domains[l.split(" ")[1]] = l.split(" ")[3].split('\n')[0]
+        return domains
+    
+    def get_domain_seq_from_req_dir(self):
+        # self.req = req_dir
         f = open(self.req, "r")
         domains = {}
         for l in f:

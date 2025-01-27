@@ -108,22 +108,25 @@ def getGraph_deltaG(dic, seq, temp, type_of_l="L1"):
             G.add_edge(complex.strands[0].name, complex.strands[0].name, weight=tube_results.complexes[complex].free_energy*(-1))
         
     # plot
-    # options = {
-    #     "font_size": 12,
-    #     "node_size": 3000,
-    #     "node_color": "white",
-    #     "edgecolors": "black",
-    #     "linewidths": 5,
-    #     "width": 5,
-    # }
+    options = {
+        # "font_size": 12,
+        # "node_size": 3000,
+        "font_size": 12,
+        "node_size": 30,
+        "node_color": "white",
+        "edgecolors": "black",
+        "linewidths": 5,
+        "width": 5,
+    }
 
-    # nx.draw_networkx(G, **options)
+    nx.draw_networkx(G, **options)
 
-    # # Set margins for the axes so that nodes aren't clipped
-    # ax = plt.gca()
-    # ax.margins(0.20)
-    # plt.axis("off")
-    # plt.show()
+    # Set margins for the axes so that nodes aren't clipped
+    ax = plt.gca()
+    ax.margins(0.20)
+    plt.axis("off")
+    plt.show()
+    # plt.savefig("/home/user/SA-EDS/results/test.png")
 
     return G
 

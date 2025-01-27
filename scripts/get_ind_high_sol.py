@@ -182,6 +182,7 @@ if __name__ == '__main__':
     print(target, type_of_l, req_num)
     
     final_path = f"/home/user/SA-EDS/results/{target}_{type_of_l}/final.p"
+    # final_path = f"/home/user/SA-EDS/results/{type_of_l}_{target}/final.p"
     result_path = f"/home/user/SA-EDS/conf/req_{type_of_l}_{req_num}/"
     print(final_path)
     print(result_path)

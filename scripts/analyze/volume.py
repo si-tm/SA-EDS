@@ -82,9 +82,10 @@ def get_vol_set(data):
     return dic
 
 if __name__ == '__main__':
-    # type_of_l_lst = ["L1", "L2", "L3"]
+    type_of_l_lst = ["L1", "L2", "L3"]
     type_of_l_lst = ["L1", "L2"]
-    iteration_lst = ["initial", "second"]
+    type_of_l_lst = ["L2"]
+    iteration_lst = ["initial", "second", "third"]
 
     # 各データ内の比較をする　特に大きいデータを探す
     for type_of_l in type_of_l_lst:
@@ -133,4 +134,4 @@ if __name__ == '__main__':
 
         # Show the plot
         plt.show()
-        plt.savefig(f"/home/user/SA-EDS/results/{type_of_l}_comp.png")
+        plt.savefig(f"/home/user/SA-EDS/results/{type_of_l}_comp_3.png")

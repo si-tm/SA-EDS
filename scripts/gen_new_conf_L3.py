@@ -6,28 +6,27 @@ import common.get_target_file as gtf
 def main():
 
     #### 以下を埋める ####  
-    conf_path="/home/user/SA-EDS/sample_structures/L3-GA100000-0.50-ERT-1_277_10/last_conf_L3-GA100000-0.50-ERT-1_277_10.dat.dat"
-    top_path="/home/user/SA-EDS/sample_structures/L3-GA100000-0.50-ERT-1_277_10/generated_L3-GA100000-0.50-ERT-1_277_10.top"
-    seq_path="/home/user/SA-EDS/sample_structures/L3-GA100000-0.50-ERT-1_277_10/seq_req_L3-GA100000-0.50-ERT-1_277_10.txt"
+    conf_path="/home/user/SA-EDS/sample_structures/r1730290730453-1_277_5/last_conf_r1730290730453-1_277_5.dat.dat"
+    top_path="/home/user/SA-EDS/sample_structures/r1730290730453-1_277_5/generated_r1730290730453-1_277_1.top"
+    seq_path="/home/user/SA-EDS/sample_structures/r1730290730453-1_277_5/seq_req_r1730290730453-1_277_5.txt"
 
-    new_conf_path="/home/user/SA-EDS/sample_structures/L3-GA100000-0.50-ERT-1_277_10/new_last_conf_L3-GA100000-0.50-ERT-1_277_10.dat.dat"
-    new_top_path="/home/user/SA-EDS/sample_structures/L3-GA100000-0.50-ERT-1_277_10/new_generated_L3-GA100000-0.50-ERT-1_277_10.top"
+    new_conf_path="/home/user/SA-EDS/sample_structures/r1730290730453-1_277_5/new_last_conf_r1730290730453-1_277_5.dat.dat"
+    new_top_path="/home/user/SA-EDS/sample_structures/r1730290730453-1_277_5/new_generated_r1730290730453-1_277_1.top"
 
-    complex_lst = [8, 17, 20, 22, 28]
+    complex_lst = [2, 8, 10, 14, 23, 26, 29]
     s_lst = []
-    base_seq_length_lst = [51, 51, 51, 49, 51, 51]
+    base_seq_length_lst = [51, 47, 49, 51, 49, 49]
     
 
     """
     # structure
-    number_of_types = 5
-    s0 = a a b @ initial 1.0 M
-    s1 = a a c @ initial 1.0 M
-    s2 = a a b* @ initial 1.0 M
-    s3 = a a d* @ initial 1.0 M
-    s4 = a a f* @ initial 1.0 M
-    s5 = a b b @ initial 1.0 M
-
+    number_of_types = 6
+    s0 = a a c @initial 1.0 M
+    s1 = b* d* d* @initial 1.0 M
+    s2 = c c d @initial 1.0 M
+    s3 = c* f* b* @initial 1.0 M
+    s4 = c* f* d @initial 1.0 M
+    s5 = d a f* @initial 1.0 M
     # length
     length a = 17
     length b = 17
@@ -36,6 +35,37 @@ def main():
     length e = 17
     length f = 17
     """
+
+    # conf_path="/home/user/SA-EDS/sample_structures/L3-GA100000-0.50-ERT-1_277_10/last_conf_L3-GA100000-0.50-ERT-1_277_10.dat.dat"
+    # top_path="/home/user/SA-EDS/sample_structures/L3-GA100000-0.50-ERT-1_277_10/generated_L3-GA100000-0.50-ERT-1_277_10.top"
+    # seq_path="/home/user/SA-EDS/sample_structures/L3-GA100000-0.50-ERT-1_277_10/seq_req_L3-GA100000-0.50-ERT-1_277_10.txt"
+
+    # new_conf_path="/home/user/SA-EDS/sample_structures/L3-GA100000-0.50-ERT-1_277_10/new_last_conf_L3-GA100000-0.50-ERT-1_277_10.dat.dat"
+    # new_top_path="/home/user/SA-EDS/sample_structures/L3-GA100000-0.50-ERT-1_277_10/new_generated_L3-GA100000-0.50-ERT-1_277_10.top"
+
+    # complex_lst = [8, 17, 20, 22, 28]
+    # s_lst = []
+    # base_seq_length_lst = [51, 51, 51, 49, 51, 51]
+    
+
+    # """
+    # # structure
+    # number_of_types = 5
+    # s0 = a a b @ initial 1.0 M
+    # s1 = a a c @ initial 1.0 M
+    # s2 = a a b* @ initial 1.0 M
+    # s3 = a a d* @ initial 1.0 M
+    # s4 = a a f* @ initial 1.0 M
+    # s5 = a b b @ initial 1.0 M
+
+    # # length
+    # length a = 17
+    # length b = 17
+    # length c = 17
+    # length d = 15
+    # length e = 17
+    # length f = 17
+    # """
 
     #####################
 
@@ -83,8 +113,8 @@ def main():
 
     print(base_diff_lst)
 
-    base_diff_lst = [357, 814, 961, 1061, 1367]
-    print(base_diff_lst)
+    # base_diff_lst = [357, 814, 961, 1061, 1367]
+    # print(base_diff_lst)
 
     N = 0
     for i, complex in enumerate(complex_lst):
@@ -95,7 +125,7 @@ def main():
     N_lst = []
 
     for i, base_diff in enumerate(base_diff_lst):
-        # print(base_seq_length_lst[s_lst[i]])
+        print(base_seq_length_lst[s_lst[i]])
         for j in range(base_seq_length_lst[s_lst[i]]):
             N_lst.append(base_diff + j)
         #     print(base_diff + j, end=" ")

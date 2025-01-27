@@ -87,6 +87,8 @@ def count_domain(target_dir):
 
     return nb_domain
 
+
+
 def stability(path, type_of_l):
     id_pair_dic = HB_connectivity(path, type_of_l)
 
@@ -112,6 +114,71 @@ def stability(path, type_of_l):
     int_xdata = [int(x) for x in xdata]
     # print(int_xdata, trans_dic.keys())
     y = [trans_dic[i]["Stability"] for i in int_xdata]
+    return y
+
+def count_base(target_dir):
+    top_dir = gtf.get_top(target_dir)
+    f = open(top_dir, 'r')
+    nb_base = 0
+    for l in f:
+        nb_base = int(l.split(" ")[0])
+        break
+    return nb_base/2
+
+
+def stability_divided_by_base(path, type_of_l):
+    id_pair_dic = HB_connectivity(path, type_of_l)
+
+    # trans_dic[step] = {"disociation" : 4, "binding" : 3, "stability" : 2}
+    trans_dic = {}
+    int_step_nb = 100000
+
+    nb_base = count_base(path)
+
+
+    for i in range(9):
+        # 解離: Dissociation
+        # 結合: Binding
+        # 安定: Stability
+        # domainの数で割る
+        step_nb = (i + 1)*int_step_nb
+        trans_dic[step_nb] = {}
+        trans_dic[step_nb]["Dissociation"] = len(id_pair_dic[i] - id_pair_dic[i + 1]) / nb_base
+        trans_dic[step_nb]["Binding"] = len(id_pair_dic[i + 1] - id_pair_dic[i]) / nb_base
+        trans_dic[step_nb]["Stability"] = len(id_pair_dic[i] & id_pair_dic[i + 1]) / nb_base
+
+    xdata = np.linspace(int_step_nb, 9*int_step_nb, 9)
+    int_xdata = [int(x) for x in xdata]
+    # print(int_xdata, trans_dic.keys())
+    y = [trans_dic[i]["Stability"] for i in int_xdata]
+    return y
+
+def binding_divided_by_base(path, type_of_l):
+    id_pair_dic = HB_connectivity(path, type_of_l)
+
+    # trans_dic[step] = {"disociation" : 4, "binding" : 3, "stability" : 2}
+    trans_dic = {}
+    int_step_nb = 100000
+
+    nb_base = count_base(path)
+
+
+    for i in range(9):
+        # 解離: Dissociation
+        # 結合: Binding
+        # 安定: Stability
+        # domainの数で割る
+        step_nb = (i + 1)*int_step_nb
+        trans_dic[step_nb] = {}
+        trans_dic[step_nb]["Dissociation"] = len(id_pair_dic[i] - id_pair_dic[i + 1]) / nb_base
+        trans_dic[step_nb]["Binding"] = len(id_pair_dic[i + 1] - id_pair_dic[i]) / nb_base
+        trans_dic[step_nb]["Stability"] = len(id_pair_dic[i] & id_pair_dic[i + 1]) / nb_base
+        trans_dic[step_nb]["total_binding"] = len(id_pair_dic[i] | id_pair_dic[i + 1]) / nb_base
+
+    xdata = np.linspace(int_step_nb, 9*int_step_nb, 9)
+    int_xdata = [int(x) for x in xdata]
+    # print(int_xdata, trans_dic.keys())
+    y = [trans_dic[i]["total_binding"] for i in int_xdata]
     return y
 
 
