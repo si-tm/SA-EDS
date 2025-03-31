@@ -56,6 +56,7 @@ def get_data(target_lst):
         new_x.append(float(domain_seq_dic[key]['eigenValue_2']))
         x_data.append(new_x)
         y_data.append(value_dic[(key[0], key[1][1:])]['mean_volume'])
+        # y_data.append(value_dic[(key[0], key[1][1:])]['eigenValue_2'])
 
     x_data = np.array(x_data)
     y_data = np.array(y_data)
