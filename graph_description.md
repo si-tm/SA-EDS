@@ -13,7 +13,7 @@ type_of_l_lst = ["L2"]
 iteration_lst = ["initial", "second", "third"]
 ```
 
-<img src="results/reloaded_plot_L1_int_initial.png" alt="volume prediction" width="33%">
+<img src="results/plot_L1_int_initial-int_second.png" alt="volume prediction" width="33%">
 
 command: 
 ```sh
