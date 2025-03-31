@@ -1,0 +1,15 @@
+INFO: Setting the random number generator with seed = 42
+INFO: The generator will try to take into account bonded interactions by choosing distances between bonded neighbours no larger than 2.000000
+INFO: Converting temperature from Kelvin (277.000000 K) to simulation units (0.092333)
+INFO: (Cells.cpp) N_cells_side: 11, 11, 11; rcut=1.58377, IS_MC: 1
+INFO: N: 600, N molecules: 30
+INFO: RELEASE: 
+INFO: GIT COMMIT: GIT_NOT_FOUND
+INFO: COMPILED ON: 02/07/24
+INFO: Starting analysis
+INFO: END OF THE ANALYSIS, everything went OK!
+INFO: Aggregated I/O statistics (set debug=1 for file-wise information)
+	  0.000  B written to files
+	 46.481 KB written to stdout/stderr
+	For a total of     8.99 MB/s
+

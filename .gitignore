@@ -7,7 +7,6 @@ int_initial
 QD_1
 test
 *final.p
-results/
 int_second*
 int_third*
 archive_data*
